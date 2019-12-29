@@ -20,24 +20,31 @@ SleepTimeL = 2
 try:
 
     while user_input != "Exit":
-        user_input = input("Please enter a Open, Close or Exit: ")
+        user_input = input("Please enter a Open, Close, Stop or Exit: ")
         if user_input == "Exit":
             GPIO.cleanup()
             print("Good bye!")
             break
         elif user_input == "Open":
             GPIO.output(12, GPIO.LOW)
-            print("ONE - Opening")
+            print("IN-ONE - Opening Doors")
             time.sleep(SleepTimeL)
             GPIO.output(12, GPIO.HIGH)
-        else:
+        elif user_input == "Close":
             GPIO.output(16, GPIO.LOW)
-            print("TWO - Closing")
+            print("IN-TWO - Closing Doors")
             time.sleep(SleepTimeL)
             GPIO.output(16, GPIO.HIGH)
+        elif user_input == "Stop":
+            GPIO.output(20, GPIO.LOW)
+            print("IN-TWO - Closing Doors")
+            time.sleep(SleepTimeL)
+            GPIO.output(20, GPIO.HIGH)
+        else:
+            print("Input Error - Try again....")
 
 # End program cleanly with keyboard
 except KeyboardInterrupt:
-    print ("  Quit")
+    print ("Quit")
     # Reset GPIO settings
     GPIO.cleanup()
