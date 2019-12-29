@@ -29,10 +29,12 @@ try:
             GPIO.output(12, GPIO.LOW)
             print("ONE - Opening")
             time.sleep(SleepTimeL)
+            GPIO.output(12, GPIO.HIGH)
         else:
             GPIO.output(16, GPIO.LOW)
             print("TWO - Closing")
             time.sleep(SleepTimeL)
+            GPIO.output(16, GPIO.HIGH)
 
 # End program cleanly with keyboard
 except KeyboardInterrupt:
