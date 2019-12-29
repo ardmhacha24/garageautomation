@@ -6,6 +6,8 @@ GPIO.setmode(GPIO.BCM)
 # init list with pin numbers
 pinList = [12, 16, 20, 21]
 
+user_input = ""
+
 # loop through pins and set mode and state to 'high'
 for i in pinList:
     GPIO.setup(i, GPIO.OUT)
@@ -17,13 +19,13 @@ SleepTimeL = 2
 # main loop
 try:
 
-    while action != "Exit":
-        action = input("Please enter a Open, Close or Exit: ")
-        if action == "Exit":
+    while user_input != "Exit":
+        user_input = input("Please enter a Open, Close or Exit: ")
+        if user_input == "Exit":
             GPIO.cleanup()
             print("Good bye!")
             break
-        elif action == "Open":
+        elif user_input == "Open":
             GPIO.output(12, GPIO.LOW)
             print("ONE - Opening")
             time.sleep(SleepTimeL)
