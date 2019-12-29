@@ -25,17 +25,17 @@ try:
             GPIO.cleanup()
             print("Good bye!")
             break
-        elif user_input == "Open" or "O":
+        elif user_input == "Open" or user_input == "O":
             GPIO.output(12, GPIO.LOW)
             print("IN-ONE - Opening Doors")
             time.sleep(SleepTimeL)
             GPIO.output(12, GPIO.HIGH)
-        elif user_input == "Close" or "C":
+        elif user_input == "Close" or user_input == "C":
             GPIO.output(16, GPIO.LOW)
             print("IN-TWO - Closing Doors")
             time.sleep(SleepTimeL)
             GPIO.output(16, GPIO.HIGH)
-        elif user_input == "Stop" or "S":
+        elif user_input == "Stop" or user_input == "S":
             GPIO.output(20, GPIO.LOW)
             print("IN-THREE - Closing Doors")
             time.sleep(SleepTimeL)
