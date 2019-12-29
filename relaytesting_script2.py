@@ -15,24 +15,25 @@ for i in pinList:
 SleepTimeL = 2
 
 # main loop
-while action != "Exit":
-    action = input("Please enter a Open, Close or Exit: ")
-    if action == "Exit":
-        break
-    elif action == "Open":
-        GPIO.output(12, GPIO.LOW)
-        print("ONE - Opening")
-        time.sleep(SleepTimeL)
-    else:
-        GPIO.output(16, GPIO.LOW)
-        print("TWO - Closing")
-        time.sleep(SleepTimeL)
+try:
 
-GPIO.cleanup()
-print("Good bye!")
+    while action != "Exit":
+        action = input("Please enter a Open, Close or Exit: ")
+        if action == "Exit":
+            GPIO.cleanup()
+            print("Good bye!")
+            break
+        elif action == "Open":
+            GPIO.output(12, GPIO.LOW)
+            print("ONE - Opening")
+            time.sleep(SleepTimeL)
+        else:
+            GPIO.output(16, GPIO.LOW)
+            print("TWO - Closing")
+            time.sleep(SleepTimeL)
 
 # End program cleanly with keyboard
 except KeyboardInterrupt:
-  print ("  Quit")
-  # Reset GPIO settings
-  GPIO.cleanup()
+    print ("  Quit")
+    # Reset GPIO settings
+    GPIO.cleanup()
