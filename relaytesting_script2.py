@@ -37,7 +37,7 @@ try:
             GPIO.output(16, GPIO.HIGH)
         elif user_input == "Stop" or user_input == "s":
             GPIO.output(20, GPIO.LOW)
-            print("IN-THREE - Closing Doors")
+            print("IN-THREE - Stopping Doors Moving")
             time.sleep(SleepTimeL)
             GPIO.output(20, GPIO.HIGH)
         else:
