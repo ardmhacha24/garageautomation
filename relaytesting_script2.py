@@ -1,12 +1,19 @@
+# Stuff I need to add:
+# 1. mag door sensors logic
+# 2. Write to log actions of note for history
+# 3. Endpoint to control via remotely
+# 4. Rasp Controller health checking and alerting
+
 import RPi.GPIO as GPIO
 import time
+import sys
 
 GPIO.setmode(GPIO.BCM)
 
 # init list with pin numbers
 pinList = [12, 16, 20, 21]
 
-user_input = ""
+user_input = None
 
 # loop through pins and set mode and state to 'high'
 for i in pinList:
@@ -48,3 +55,4 @@ except KeyboardInterrupt:
     print ("Quit")
     # Reset GPIO settings
     GPIO.cleanup()
+    sys.exit(0)
