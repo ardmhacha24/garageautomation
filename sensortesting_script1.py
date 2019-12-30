@@ -8,8 +8,8 @@ GPIO.setmode(GPIO.BCM)
 # This is the GPIO pin number we have one of the door sensor
 # wires attached to, the other should be attached to a ground
 # Bottom of door Sensor
-pin.DOOR_SENSOR_PIN_BOTTOM = 18
-pin.DOOR_SENSOR_PIN_TOP = 24
+DOOR_SENSOR_PIN_BOTTOM = 18
+DOOR_SENSOR_PIN_TOP = 24
 
 # Initially we don't know if the door sensor is open or closed...
 isOpen = None
@@ -29,7 +29,7 @@ signal.signal(signal.SIGINT, cleanupLights)
 
 while True:
     oldIsOpen = isOpen
-    isOpen = GPIO.input(DOOR_SENSOR_PIN)
+    isOpen = GPIO.input(DOOR_SENSOR_PIN_BOTTOM)
     if (isOpen and (isOpen != oldIsOpen)):
         print "Space is unoccupied!"
     elif (isOpen != oldIsOpen):
