@@ -28,9 +28,9 @@ GPIO.setup(DOOR_SENSOR_PIN_TOP, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 signal.signal(signal.SIGINT, cleanupLights)
 
 while True:
-    print("oldIsOpen: ", oldIsOpen)
+    #print("oldIsOpen: ", oldIsOpen)
     oldIsOpen = isOpen
-    print ("isOpen: ", isOpen)
+    #print ("isOpen: ", isOpen)
     isOpen = GPIO.input(DOOR_SENSOR_PIN_BOTTOM)
     if (isOpen and (isOpen != oldIsOpen)):
         print ("Garge Door is Closed!")
