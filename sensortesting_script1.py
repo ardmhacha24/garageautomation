@@ -7,7 +7,9 @@ GPIO.setmode(GPIO.BCM)
 
 # This is the GPIO pin number we have one of the door sensor
 # wires attached to, the other should be attached to a ground
-pin.DOOR_SENSOR_PIN = 18
+# Bottom of door Sensor
+pin.DOOR_SENSOR_PIN_BOTTOM = 18
+pin.DOOR_SENSOR_PIN_TOP = 24
 
 # Initially we don't know if the door sensor is open or closed...
 isOpen = None
@@ -19,7 +21,8 @@ def cleanupLights(signal, frame):
     sys.exit(0)
 
 # Set up the door sensor pin.
-GPIO.setup(DOOR_SENSOR_PIN, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(DOOR_SENSOR_PIN_BOTTOM, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(DOOR_SENSOR_PIN_TOP, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 # Set the cleanup handler for when user hits Ctrl-C to exit
 signal.signal(signal.SIGINT, cleanupLights)
