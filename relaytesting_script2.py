@@ -27,8 +27,8 @@ SleepTimeL = 2
 try:
 
     while user_input != "Exit":
-        user_input = input("Please enter a Open (o), Close (c), Stop (s) or Exit: ")
-        if user_input == "Exit":
+        user_input = input("Please enter a Open (o), Close (c), Stop (s) or Exit (e): ")
+        if user_input == "Exit" or user_input == "e":
             GPIO.cleanup()
             print("Good bye!")
             break

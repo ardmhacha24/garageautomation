@@ -1,7 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 import sys
-import signal
 
 GPIO.setmode(GPIO.BCM)
 
@@ -17,27 +16,29 @@ BOTTOMoldIsOpen = None
 TOPisOpen = None
 TOPoldIsOpen = None
 
-# Clean up when the user exits with keyboard interrupt
-def cleanupLights(signal, frame):
-    GPIO.cleanup()
-    sys.exit(0)
-
 # Set up the door sensor pin.
 GPIO.setup(DOOR_SENSOR_PIN_BOTTOM, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-#GPIO.setup(DOOR_SENSOR_PIN_TOP, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(DOOR_SENSOR_PIN_TOP, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
-# Set the cleanup handler for when user hits Ctrl-C to exit
-signal.signal(signal.SIGINT, cleanupLights)
+# main loop
+try:
 
-while True:
-    BOTTOMoldIsOpen = BOTTOMisOpen
-    #TOPoldIsOpen = TOPisOpen
+    while True:
+        BOTTOMoldIsOpen = BOTTOMisOpen
+        TOPoldIsOpen = TOPisOpen
 
-    BOTTOMisOpen = GPIO.input(DOOR_SENSOR_PIN_BOTTOM)
-    #TOPisOpen = GPIO.input(DOOR_SENSOR_PIN_TOP)
+        BOTTOMisOpen = GPIO.input(DOOR_SENSOR_PIN_BOTTOM)
+        TOPisOpen = GPIO.input(DOOR_SENSOR_PIN_TOP)
 
-    if (BOTTOMisOpen and (BOTTOMisOpen != BOTTOMoldIsOpen)):
-        print("Garage Door is Open!")
-    elif (BOTTOMisOpen != BOTTOMoldIsOpen):
-        print ("Garge Door is Closed!")
-    time.sleep(0.1)
+        if (BOTTOMisOpen and (BOTTOMisOpen != BOTTOMoldIsOpen)):
+            print("Garage Door is Open!")
+        elif (BOTTOMisOpen != BOTTOMoldIsOpen):
+            print ("Garge Door is Closed!")
+            time.sleep(0.1)
+
+# End program cleanly with keyboard
+except KeyboardInterrupt:
+    print ("Quit")
+    # Reset GPIO settings
+    GPIO.cleanup()
+    sys.exit(0)
