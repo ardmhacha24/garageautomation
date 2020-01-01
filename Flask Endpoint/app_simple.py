@@ -12,9 +12,9 @@ SleepTimeL = 2
 
 GPIO.setmode(GPIO.BCM)
 pins = {
-    12 : {'name' : 'Garage Door Open', 'state' : GPIO.HIGH}
-#    16 : {'name' : 'Garage Door Close', 'state' : GPIO.HIGH}
-#    20 : {'name' : 'Garage Door Stop', 'state' : GPIO.HIGH}
+    12 : {'name' : 'Garage Door Open', 'state' : GPIO.HIGH},
+    16 : {'name' : 'Garage Door Close', 'state' : GPIO.HIGH},
+    20 : {'name' : 'Garage Door Stop', 'state' : GPIO.HIGH}
 }
 
 for pin in pins:
