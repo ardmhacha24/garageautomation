@@ -46,11 +46,13 @@ def action(changePin, action):
         GPIO.output(changePin, GPIO.LOW)
         time.sleep(SleepTimeL)
         GPIO.output(changePin, GPIO.HIGH)
-	for pin in pins:
-        pins[pin]['state'] = GPIO.input(pin)
-    templateData = {
-        'pins' : pins
-    }
+
+
+	#for pin in pins:
+     #       pins[pin]['state'] = GPIO.input(pin)
+    #templateData = {
+     #   'pins' : pins
+    #}
     return render_template('main.html', **templateData)
 
 if __name__ == "__main__":
