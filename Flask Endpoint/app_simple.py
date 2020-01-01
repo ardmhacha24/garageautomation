@@ -28,7 +28,7 @@ def main():
         templateData = {
             'pins' : pins
         }
-        return render_template('main.html', templateData)
+        return render_template('main.html', **templateData)
 
 @app.route("/<changePin>/<action>", methods=['GET', 'POST'])
 def action(changePin, action):
@@ -53,7 +53,7 @@ def action(changePin, action):
     #templateData = {
      #   'pins' : pins
     #}
-    return render_template('main.html', templateData)
+    return render_template('main.html', **templateData)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
