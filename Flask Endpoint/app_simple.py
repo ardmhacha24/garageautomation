@@ -35,7 +35,7 @@ def main():
     for door in doors:
         doors[door]['state'] = "closed"
         templateData = {
-            'doors' : pins
+            'doors' : doors
         }
         return render_template('main.html', **templateData)
 
@@ -54,7 +54,7 @@ def action(action):
         doors[1]['state'] = "close"
 
 	templateData = {
-        'doors' : pins
+        'doors' : doors
     }
     return render_template('main.html', **templateData)
 
