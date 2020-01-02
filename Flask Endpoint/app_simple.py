@@ -23,12 +23,12 @@ for i in pinList:
 SleepTimeL = 2
 
 doors = {
-    1 : {'name' : 'Left Door', 'state' : "close"},
-    2 : {'name' : 'Right Door', 'state' : "close"}
+    "Left" : {'name' : 'Left Door', 'state' : "close"},
+    "Right" : {'name' : 'Right Door', 'state' : "close"}
 }
 doors_GPIOpins = {
-    1 : {'open' : 12, 'closed' : 16},
-    2 : {'open' : 20, 'closed' : 21}
+    "Left" : {'open' : 12, 'close' : 16},
+    "Right" : {'open' : 20, 'close' : 21}
 }
 
 global templateData
@@ -42,18 +42,13 @@ def main():
 
 @app.route("/<door>/<action>", methods=['GET', 'POST'])
 def action(door, action):
-    if action == "open":
-        GPIO.output(doors_GPIOpins[door]['open'], GPIO.LOW)
-        time.sleep(SleepTimeL)
-        GPIO.output(doors_GPIOpins[door]['open'], GPIO.HIGH)
-        doors[door]['state'] = "open"
-    if action == "close":
-        GPIO.output(doors_GPIOpins[door]['close'], GPIO.LOW)
-        time.sleep(SleepTimeL)
-        GPIO.output(doors_GPIOpins[door]['close'], GPIO.HIGH)
-        doors[1]['state'] = "close"
+   # need to do som sanity checking and error handling...
+   GPIO.output(doors_GPIOpins[door][action], GPIO.LOW)
+   time.sleep(SleepTimeL)
+   GPIO.output(doors_GPIOpins[door][action], GPIO.HIGH)
+   doors[door]['state'] = action
 
-    return render_template('main.html', **templateData)
+   return render_template('main.html', **templateData)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001, debug=True)
