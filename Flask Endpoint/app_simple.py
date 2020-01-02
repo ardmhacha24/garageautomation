@@ -33,7 +33,7 @@ doors = {
 @app.route("/")
 def main():
     for door in doors:
-        doors[door]['state'] = "close"
+        #doors[door]['state'] = "close"
         templateData = {
             'doors' : doors
         }
@@ -54,9 +54,6 @@ def action(action):
         GPIO.output(16, GPIO.HIGH)
         doors[1]['state'] = "close"
 
-	templateData = {
-        'doors' : doors
-    }
     return render_template('main.html', **templateData)
 
 if __name__ == "__main__":
