@@ -11,48 +11,51 @@ app = Flask(__name__, static_url_path='/static')
 SleepTimeL = 2
 
 GPIO.setmode(GPIO.BCM)
-pins = {
-    12 : {'name' : 'Garage Door Open', 'state' : GPIO.HIGH},
-    16 : {'name' : 'Garage Door Close', 'state' : GPIO.HIGH},
-    20 : {'name' : 'Garage Door Stop', 'state' : GPIO.HIGH}
-}
+# init list with pin numbers
+pinList = [12, 16, 20, 21]
 
-for pin in pins:
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, GPIO.HIGH)
+# loop through pins and set mode and state to 'high' (aka OFF)
+for i in pinList:
+    GPIO.setup(i, GPIO.OUT)
+    GPIO.output(i, GPIO.HIGH)
+
+# time to sleep between operations in the main loop
+SleepTimeL = 2
+
+door1Status = "close"
+door2Status = "close"
+
+doors = {
+    1 : {'name' : 'Left Door', 'state' : door1Status},
+    2 : {'name' : 'Right Door', 'state' : door2Status}
+}
 
 @app.route("/")
 def main():
-    for pin in pins:
-        pins[pin]['state'] = GPIO.input(pin)
+    for door in doors:
+        doors[door]['state'] = "closed"
         templateData = {
-            'pins' : pins
+            'doors' : pins
         }
         return render_template('main.html', **templateData)
 
-@app.route("/<changePin>/<action>", methods=['GET', 'POST'])
-def action(changePin, action):
-    changePin = int(changePin)
-    deviceName = pins[changePin]['name']
+@app.route("/<action>", methods=['GET', 'POST'])
+def action(action):
+    deviceName = doors[1]['name']
     if action == "open":
-        GPIO.output(changePin, GPIO.LOW)
+        GPIO.output(12, GPIO.LOW)
         time.sleep(SleepTimeL)
-        GPIO.output(changePin, GPIO.HIGH)
+        GPIO.output(12, GPIO.HIGH)
+        doors[1]['state'] = "open"
     if action == "close":
-        GPIO.output(changePin, GPIO.LOW)
+        GPIO.output(16, GPIO.LOW)
         time.sleep(SleepTimeL)
-        GPIO.output(changePin, GPIO.HIGH)
-    if action == "stop":
-        GPIO.output(changePin, GPIO.LOW)
-        time.sleep(SleepTimeL)
-        GPIO.output(changePin, GPIO.HIGH)
+        GPIO.output(16, GPIO.HIGH)
+        doors[1]['state'] = "close"
 
-
-	#for pin in pins:
-     #       pins[pin]['state'] = GPIO.input(pin)
-    #templateData = {
-     #   'pins' : pins
-    #}
+	templateData = {
+        'doors' : pins
+    }
     return render_template('main.html', **templateData)
 
 if __name__ == "__main__":
