@@ -33,7 +33,7 @@ doors = {
 @app.route("/")
 def main():
     for door in doors:
-        doors[door]['state'] = "closed"
+        doors[door]['state'] = "close"
         templateData = {
             'doors' : doors
         }
@@ -41,6 +41,7 @@ def main():
 
 @app.route("/<action>", methods=['GET', 'POST'])
 def action(action):
+    global templateData
     deviceName = doors[1]['name']
     if action == "open":
         GPIO.output(12, GPIO.LOW)
