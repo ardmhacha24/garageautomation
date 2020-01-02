@@ -11,8 +11,8 @@
 	<h1>Garage Door Web server</h1>
 	{% for door in doors %}
 	<h2>{{ doors[door].name }}
-	{% if doors[door].state == "open" %} is currently <strong>Open</strong></h2><div class="row"><div class="col-md-2"> <a href="{{door}}/close" class="w3-button w3-blue" role="button">Close Door</a></div></div>
-	{% else %} is currently <strong>Closed</strong></h2><div class="row"><div class="col-md-2"> <a href="{{door}}/open" class="w3-button w3-black" role="button">Open Door</a></div></div>
+	{% if doors[door].state == "open" %} is currently <strong>Open</strong></h2><div class="row"><div class="col-md-2"> <a href="{{doors[door]}}/close" class="w3-button w3-blue" role="button">Close Door</a></div></div>
+	{% else %} is currently <strong>Closed</strong></h2><div class="row"><div class="col-md-2"> <a href="{{doors[door]}}/open" class="w3-button w3-black" role="button">Open Door</a></div></div>
 	{% endif %}
 	{% endfor %}
 </body>
