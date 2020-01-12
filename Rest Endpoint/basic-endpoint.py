@@ -40,8 +40,8 @@ def index():
 # check all door status endpoint
 @app.route('/doors', methods=['GET'])
 def get_doors():
-    #return jsonify({'doors': doors})
-    return jsonify({'doors': [make_public_door(door) for door in doors]})
+    return jsonify({'doors': doors})
+    #return jsonify({'doors': [make_public_door(door) for door in doors]})
 
 # check individual door status endpoint
 @app.route('/doors/<int:door>', methods=['GET'])
