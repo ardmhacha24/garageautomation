@@ -44,7 +44,7 @@ def get_doors():
     #return jsonify({'doors': [make_public_door(door) for door in doors]})
 
 # check individual door status endpoint
-@app.route('/doors/<int:door>', methods=['GET'])
+@app.route('/doors/<door>', methods=['GET'])
 def get_door_status(door):
     door = [door for door in doors if door['id'] == door]
     if len(door) == 0:
