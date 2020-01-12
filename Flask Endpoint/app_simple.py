@@ -7,9 +7,6 @@ import sys
 from flask import Flask, render_template, request
 app = Flask(__name__, static_url_path='/static')
 
-# time to sleep between operations in the main loop
-SleepTimeL = 2
-
 GPIO.setmode(GPIO.BCM)
 # init list with pin numbers
 pinList = [12, 16, 20, 21]
@@ -20,7 +17,7 @@ for i in pinList:
     GPIO.output(i, GPIO.HIGH)
 
 # time to sleep between operations in the main loop
-SleepTimeL = 2
+SleepTimeL = 0.2
 
 doors = {
     "Left" : {'name' : 'Left Door', 'state' : "close"},

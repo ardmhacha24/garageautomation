@@ -3,6 +3,7 @@
 # 2. Write to log actions of note for history
 # 3. Endpoint to control via remotely
 # 4. Rasp Controller health checking and alerting
+# 4. SMTP Alerts
 
 import RPi.GPIO as GPIO
 import time
