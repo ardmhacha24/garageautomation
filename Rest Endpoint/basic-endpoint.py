@@ -24,6 +24,59 @@ doors = [
     }
 ]
 
+class Door(object):
+    last_action = None
+    last_action_time = None
+    msg_sent = False
+    pb_iden = None
+
+    def __init__(self, doorId, config):
+        self.id = doorId
+        self.name = config['name']
+        self.relay_pin = config['relay_pin']
+        self.state_pin = config['state_pin']
+        self.state_pin_closed_value = config.get('state_pin_closed_value', 0)
+        self.time_to_close = config.get('time_to_close', 10)
+        self.time_to_open = config.get('time_to_open', 10)
+        self.open_time = time.time()
+        gpio.setup(self.relay_pin, gpio.OUT)
+        gpio.setup(self.state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
+        gpio.output(self.relay_pin, True)
+
+    def get_state(self):
+        if gpio.input(self.state_pin) == self.state_pin_closed_value:
+            return 'closed'
+        elif self.last_action == 'open':
+            if time.time() - self.last_action_time >= self.time_to_open:
+                return 'open'
+            else:
+                return 'opening'
+        elif self.last_action ==  'close':
+            if time.time() - self.last_action_time >= self.time_to_close:
+                return 'open' # This state indicates a problem
+            else:
+                return 'closing'
+        else:
+            return 'open'
+
+    def toggle_relay(self):
+        state = self.get_state()
+        if (state == 'open'):
+            self.last_action = 'close'
+            self.last_action_time = time.time()
+        elif state == 'closed':
+            self.last_action = 'open'
+            self.last_action_time = time.time()
+        else:
+            self.last_action = None
+            self.last_action_time = None
+
+        gpio.output(self.relay_pin, False)
+        time.sleep(0.2)
+        gpio.output(self.relay_pin, True)
+
+
+
 def make_public_door(door):
     new_door = {}
     for field in door:
