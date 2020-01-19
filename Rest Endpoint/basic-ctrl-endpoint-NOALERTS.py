@@ -21,18 +21,6 @@ class Controller(object):
             door.last_state = 'unknown'
             door.last_state_time = time.time()
 
-        self.use_alerts = config['config']['use_alerts']
-        self.alert_type = config['alerts']['alert_type']
-        self.ttw = config['alerts']['time_to_wait']
-        if self.alert_type == 'smtp':
-            self.use_smtp = False
-            smtp_params = ("smtphost", "smtpport", "smtp_tls", "username", "password", "to_email")
-            self.use_smtp = ('smtp' in config['alerts']) and set(smtp_params) <= set(config['alerts']['smtp'])
-            syslog.syslog("we are using SMTP")
-        else:
-            self.alert_type = None
-            syslog.syslog("No alerts configured")
-
     def status_check(self):
         for door in self.doors:
             new_state = door.get_state()
@@ -61,28 +49,6 @@ class Controller(object):
                             self.send_email(title, message)
                 door.open_time = time.time()
                 door.msg_sent = False
-
-    def send_email(self, title, message):
-        try:
-            if self.use_smtp:
-                syslog.syslog("Sending email message")
-                config = self.config['alerts']['smtp']
-
-                message = MIMEText(message)
-                message['Date'] = formatdate()
-                message['From'] = config["username"]
-                message['To'] = config["to_email"]
-                message['Subject'] = config["subject"]
-                message['Message-ID'] = make_msgid()
-
-                server = smtplib.SMTP(config["smtphost"], config["smtpport"])
-                if (config["smtp_tls"] == "True") :
-                    server.starttls()
-                server.login(config["username"], config["password"])
-                server.sendmail(config["username"], config["to_email"], message.as_string())
-                server.close()
-        except Exception as inst:
-            syslog.syslog("Error sending email: " + str(inst))
 
     def toggle(self, doorId):
         for d in self.doors:

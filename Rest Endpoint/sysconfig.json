@@ -18,7 +18,7 @@
         }
     },
     "site":{
-        "port":8081,
+        "port":5001,
         "port_secure":8444,
         "username":"user",
         "password":"12345",
