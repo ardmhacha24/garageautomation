@@ -10,6 +10,10 @@ import subprocess
 
 class Controller(object):
     def __init__(self, config):
+        #setting up flask framework for our endoint
+        from flask import Flask, render_template, request, jsonify, abort, url_for
+        global app = Flask(__name__)
+
         #setting up the control pins on relay switch
         gpio.setwarnings(False)
         gpio.cleanup()
@@ -20,6 +24,10 @@ class Controller(object):
         for door in self.doors:
             door.last_state = 'unknown'
             door.last_state_time = time.time()
+
+        self.use_alerts = config['config']['use_alerts']
+        self.alert_type = config['alerts']['alert_type']
+        self.ttw = config['alerts']['time_to_wait']
 
     def status_check(self):
         for door in self.doors:
@@ -35,8 +43,6 @@ class Controller(object):
                     title = "%s's garage door open" % door.name
                     etime = elapsed_time(int(time.time() - door.open_time))
                     message = "%s's garage door has been open for %s" % (door.name, etime)
-                    if self.alert_type == 'smtp':
-                        self.send_email(title, message)
                     door.msg_sent = True
 
             if new_state == 'closed':
@@ -45,8 +51,6 @@ class Controller(object):
                         title = "%s's garage doors closed" % door.name
                         etime = elapsed_time(int(time.time() - door.open_time))
                         message = "%s's garage door is now closed after %s  "% (door.name, etime)
-                        if self.alert_type == 'smtp':
-                            self.send_email(title, message)
                 door.open_time = time.time()
                 door.msg_sent = False
 
@@ -64,28 +68,32 @@ class Controller(object):
                 updates.append((d.id, d.last_state, d.last_state_time))
         return updates
 
-    def get_config_with_default(self, config, param, default):
-        if not config:
-            return default
-        if not param in config:
-            return default
-        return config[param]
+    @app.route('/')
+    def index():
+        return "Hello, World!"
+
+    # check all door status endpoint
+    @app.route('/doors', methods=['GET'])
+    def get_doors():
+        return jsonify({'doors': doors})
+        # return jsonify({'doors': [make_public_door(door) for door in doors]})
+
+    # check individual door status endpoint
+    @app.route('/doors/<door>', methods=['GET'])
+    def get_door_status(door):
+        door = [door for door in doors if door['id'] == door]
+        if len(door) == 0:
+            abort(404)
+        return jsonify({'door': door[0]})
+
+    # do something with our door
+    @app.route("/<door>/<action>", methods=['POST'])
+    def action(door, action):
+        return "Lets do somethimg with ths door.. %s:%s" % (door, action)
 
     def run(self):
-        if self.config['config']['use_auth']:
-
-        else:
-
-
-
-
-        if not self.get_config_with_default(self.config['config'], 'use_https', False):
-            #reactor.listenTCP(self.config['site']['port'], site)  # @UndefinedVariable
-            #reactor.run()  # @UndefinedVariable
-        else:
-            #sslContext = ssl.DefaultOpenSSLContextFactory(self.config['site']['ssl_key'], self.config['site']['ssl_cert'])
-            #reactor.listenSSL(self.config['site']['port_secure'], site, sslContext)  # @UndefinedVariable
-            #reactor.run()  # @UndefinedVariable
+        if __name__ == '__main__':
+            app.run(host='0.0.0.0', port=5001, debug=True)
 
 # main loop
 try:
