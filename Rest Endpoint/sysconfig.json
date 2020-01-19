@@ -33,8 +33,7 @@
             "closed_state_pin":18,
             "opened_state_pin":24,
             "pin_closed_value":0,
-            "approx_time_to_close":15,
-            "approx_time_to_open":15,
+            "approx_time_to_openclose":15
         },
         "right":{
             "name":"RIGHT",
@@ -43,8 +42,7 @@
             "closed_state_pin":1,
             "opened_state_pin":2,
             "pin_closed_value":0,
-            "approx_time_to_close":15,
-            "approx_time_to_open":15
+            "approx_time_to_openclose":15
         }
     }
 }
