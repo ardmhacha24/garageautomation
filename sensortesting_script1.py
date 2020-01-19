@@ -32,6 +32,8 @@ while True:
 
     if (isOpen and (isOpen != oldIsOpen)):
         print("Garage Door is Open!")
+        print ('A - values.... %s: %s', oldIsOpen, isOpen)
     elif (isOpen != oldIsOpen):
         print ("Garge Door is Closed!")
+        print('B - values.... %s: %s', oldIsOpen, isOpen)
     time.sleep(0.1)
