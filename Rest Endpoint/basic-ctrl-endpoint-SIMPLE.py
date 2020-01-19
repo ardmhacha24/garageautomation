@@ -8,10 +8,6 @@ import httplib
 import urllib
 import subprocess
 
-#setting up flask framework for our endoint
-from flask import Flask, render_template, request, jsonify, abort, url_for
-global app = Flask(__name__)
-
 class Door(object):
     last_action = None
     last_action_time = None
@@ -79,6 +75,10 @@ class Door(object):
 
 class Controller(object):
     def __init__(self, config):
+        # setting up flask framework for our endoint
+        from flask import Flask, render_template, request, jsonify, abort, url_for
+        global app = Flask(__name__)
+
         #setting up the control pins on relay switch
         gpio.setwarnings(False)
         gpio.cleanup()
