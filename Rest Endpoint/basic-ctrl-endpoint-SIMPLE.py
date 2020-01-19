@@ -4,9 +4,6 @@ import time, sys, syslog, uuid
 import smtplib
 import RPi.GPIO as gpio
 import json
-import httplib
-import urllib
-import subprocess
 
 class Door(object):
     last_action = None
