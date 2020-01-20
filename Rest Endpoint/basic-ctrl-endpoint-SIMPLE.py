@@ -74,7 +74,7 @@ class Controller(object):
     def __init__(self, config):
         # setting up flask framework for our endoint
         from flask import Flask, render_template, request, jsonify, abort, url_for
-        app = Flask(__name__)
+        self.app = Flask(__name__)
 
         #setting up the control pins on relay switch
         gpio.setwarnings(False)
