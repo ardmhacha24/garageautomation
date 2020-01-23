@@ -31,14 +31,16 @@ class Door(object):
         elif self.last_action == 'open':
             if gpio.input(self.opened_state_pin) == self.pin_closed_value:
                 return 'opened'
-            elif (time.time() - self.last_action_time >= self.time_to_openclose) and (gpio.input(self.opened_state_pin) != self.pin_closed_value) and (gpio.input(self.closed_state_pin) != self.pin_closed_value):
+            elif (time.time() - self.last_action_time >= self.time_to_openclose) and (gpio.input(self.opened_state_pin) != self.pin_closed_value) \
+                    and (gpio.input(self.closed_state_pin) != self.pin_closed_value):
                 return 'opening error - taking too long'
             else:
                 return 'opening'
         elif self.last_action ==  'close':
             if gpio.input(self.closed_state_pin) == self.pin_closed_value:
                 return 'closed'
-            elif (time.time() - self.last_action_time >= self.time_to_openclose) and (gpio.input(self.closed_state_pin) != self.pin_closed_value) and (gpio.input(self.opened_state_pin) != self.pin_closed_value):
+            elif (time.time() - self.last_action_time >= self.time_to_openclose) and (gpio.input(self.closed_state_pin) != self.pin_closed_value) \
+                    and (gpio.input(self.opened_state_pin) != self.pin_closed_value):
                 return 'closing error - taking too long'
             else:
                 return 'closing'

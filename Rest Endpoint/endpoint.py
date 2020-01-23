@@ -31,5 +31,5 @@ def get_door_status(door):
 def action(door, action):
     return "Lets do somethimg with ths door.. %s:%s" % (door, action)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
