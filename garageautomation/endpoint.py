@@ -6,7 +6,7 @@ from garageautomation.controller import Controller
 
 app = Flask(__name__)
 
-with open('../config/config.json') as config_file:
+with open('./config/config.json') as config_file:
     config: object = json.load(config_file)
 controller = Controller(config)
 
