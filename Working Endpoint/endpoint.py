@@ -1,13 +1,13 @@
 # setting up flask framework for our endoint
 import json
-from flask import Flask, render_template, request, jsonify, abort, url_for
+from flask import Flask, jsonify
 from .controller import Controller
 
 
 app = Flask(__name__)
 
-with open('sysconfig.json') as config_file:
-    config = json.load(config_file)
+with open('../config.json') as config_file:
+    config: object = json.load(config_file)
 controller = Controller(config)
 
 @app.route('/')

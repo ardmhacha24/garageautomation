@@ -1,0 +1,48 @@
+{
+    "config":{
+        "use_https":false,
+        "use_auth":false,
+        "use_alerts":false
+    },
+    "alerts":{
+        "time_to_wait":10,
+        "alert_type":null,
+        "smtp":{
+            "smtphost":"<SMTP HOST>",
+            "smtpport":587,
+            "smtp_tls":"True",
+            "username":"<USERNAME EMAIL ADDRESS>",
+            "password":"<PASSWORD>",
+            "to_email":"<TO EMAIL ADDRESS>",
+            "subject":"<EMAIL SUBJECT>"
+        }
+    },
+    "site":{
+        "port":5001,
+        "port_secure":8444,
+        "username":"user",
+        "password":"12345",
+        "ssl_key":"/home/pi/garage-door-controller-cert/localhost.key",
+        "ssl_cert":"/home/pi/garage-door-controller-cert/localhost.crt"
+    },
+    "doors":{
+        "left":{
+            "name":"LEFT",
+            "open_pin":12,
+            "close_pin":16,
+            "closed_state_pin":18,
+            "opened_state_pin":24,
+            "pin_closed_value":0,
+            "approx_time_to_openclose":15
+        },
+        "right":{
+            "name":"RIGHT",
+            "open_pin":20,
+            "close_pin":21,
+            "closed_state_pin":1,
+            "opened_state_pin":2,
+            "pin_closed_value":0,
+            "approx_time_to_openclose":15
+        }
+    }
+}
