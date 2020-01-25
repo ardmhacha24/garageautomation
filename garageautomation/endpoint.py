@@ -1,7 +1,7 @@
 # setting up flask framework for our endoint
 import json
 from flask import Flask, jsonify
-from .controller import Controller
+from garageautomation.controller import Controller
 
 
 app = Flask(__name__)
