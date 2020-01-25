@@ -127,7 +127,7 @@ try:
     while True:
         if __name__ == '__main__':
             syslog.openlog('garage_controller')
-            config_file = open('../sysconfig.json')
+            config_file = open('../config.json')
             controller = Controller(json.load(config_file))
             config_file.close()
             controller.run()
