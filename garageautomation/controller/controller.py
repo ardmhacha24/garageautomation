@@ -60,8 +60,10 @@ class Controller(object):
     def toggle(self, door_id, action):
         for d in self.doors:
             if d.id == door_id:
+                testing_state = d.get_state()
+                print("before toggle - State:", testing_state)
                 action_outcome = d.toggle_relay(action)
-                print(action_outcome)
+                print("in toggle.. Action_Outcome:", action_outcome)
                 return action_outcome
             else:
                 return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
