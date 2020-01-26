@@ -23,7 +23,7 @@ def get_doors_allstatus():
 # check individual door status endpoint
 @app.route('/doors/<door>', methods=['GET'])
 def get_door_status(door):
-    status = controller.door_status(door)
+    status = controller.get_door_status(door)
     return jsonify(status)
 
 # do something with our door

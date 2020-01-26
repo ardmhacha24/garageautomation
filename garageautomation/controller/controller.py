@@ -25,40 +25,49 @@ class Controller(object):
         self.ttw = config['alerts']['time_to_wait']
 
     def get_door_status(self, door_id):
-        return
-        {
-            "id": d.id,
-            "name": d.name,
-            "last_state": d.last_state,
-            "last_state_time": d.last_state_time
-        }
+        door_status = []
+        for d in self.doors:
+            if d.id == door_id:
+                door_status = [
+                    {
+                        "id": d.id,
+                        "name": d.name,
+                        "last_state": d.last_state,
+                        "last_state_time": d.last_state_time,
+                        "pin_check_open": d.open_pin,
+                        "pin_check_close": d.close_pin
+                    }
+                ]
+        return door_status
 
-    def get_all_statuses(self):
-        statuses = [self.get_door_status(d.id) for d in self.doors]
-        return statuses
+    def get_all_door_status(self):
+        door_all_status = [
+            {
+                "id": d.id,
+                "name": d.name,
+                "last_state": d.last_state,
+                "last_state_time": d.last_state_time,
+                "pin_check_open" : d.open_pin,
+                "pin_check_close": d.close_pin
+            }
+            for d in self.door
+        ]
+        return door_all_status
 
-        # door_allstat = [
-        #     {
-        #         "id": d.id,
-        #         "name": d.name,
-        #         "last_state": d.last_state,
-        #         "last_state_time": d.last_state_time
-        #     }
-        #     for d in self.doors
-        # ]
+        # Old code constructs
+        # statuses = [self.get_door_status(d.id) for d in self.doors]
+        # return statuses
 
-        # door_allstat = []
+        # door_all_status = []
         # for d in self.doors:
-        #     d = d.append(
-        #         {
-        #             "id": d.id,
-        #             "name": d.name,
-        #             "last_state": d.last_state,
-        #             "last_state_time": d.last_state_time
-        #         }
-        #     )
-        #  return door_allstat
-
+        #   d = d.append(
+        #       {
+        #           "id": d.id,
+        #           "name": d.name,
+        #           "last_state": d.last_state,
+        #           "last_state_time": d.last_state_time
+        #       }
+        #   )
 
     # def status_check(self):
     #     for door in self.doors:
@@ -88,7 +97,6 @@ class Controller(object):
                 syslog.syslog('%s: toggled' % d.name)
                 d.toggle_relay(action)
 
-    
     def get_updates(self, lastupdate):
         updates = []
         for d in self.doors:
