@@ -33,8 +33,8 @@ class Controller(object):
                         "name": d.name,
                         "last_state": d.last_state,
                         "last_state_time": d.last_state_time,
-                        "pin_check_open": d.open_pin,
-                        "pin_check_close": d.close_pin
+                        "last_action": d.last_action,
+                        "last_action_time": d.last_action_time
                     }
                 ]
 
@@ -50,8 +50,8 @@ class Controller(object):
                 "name": d.name,
                 "last_state": d.last_state,
                 "last_state_time": d.last_state_time,
-                "pin_check_open": d.open_pin,
-                "pin_check_close": d.close_pin
+                "last_action": d.last_action,
+                "last_actioon_time": d.last_action_time
             }
             for d in self.doors
         ]
@@ -79,9 +79,9 @@ class Controller(object):
     #                     message = "%s's garage door is now closed after %s  "% (door.name, etime)
     #             door.open_time = time.time()
 
-    def toggle(self, doorId, action=None):
+    def toggle(self, door_id, action=None):
         for d in self.doors:
-            if d.id == doorId:
+            if d.id == door_id:
                 syslog.syslog('%s: toggled' % d.name)
                 d.toggle_relay(action)
 
