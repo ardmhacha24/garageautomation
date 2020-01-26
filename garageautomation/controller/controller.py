@@ -57,6 +57,14 @@ class Controller(object):
         ]
         return door_all_status
 
+    def toggle(self, door_id, action):
+        for d in self.doors:
+            if d.id == door_id:
+                action_status = d.toggle_relay(action)
+                return action_status
+            else:
+                return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
+
     # def status_check(self):
     #     for door in self.doors:
     #         new_state = door.get_state()
@@ -79,17 +87,9 @@ class Controller(object):
     #                     message = "%s's garage door is now closed after %s  "% (door.name, etime)
     #             door.open_time = time.time()
 
-    def toggle(self, door_id, action):
-        for d in self.doors:
-            if d.id == door_id:
-                action_status = d.toggle_relay(action)
-                return action_status
-            else:
-                return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
-
-    def get_updates(self, lastupdate):
-        updates = []
-        for d in self.doors:
-            if d.last_state_time >= lastupdate:
-                updates.append((d.id, d.last_state, d.last_state_time))
-        return updates
+    # def get_updates(self, lastupdate):
+    #     updates = []
+    #     for d in self.doors:
+    #         if d.last_state_time >= lastupdate:
+    #             updates.append((d.id, d.last_state, d.last_state_time))
+    #     return updates

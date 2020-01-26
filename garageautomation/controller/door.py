@@ -56,7 +56,7 @@ class Door(object):
 
     def toggle_relay(self, door_action):
         door_current_state = self.get_state()
-        print('testing..1 %s', door_current_state)
+        print('testing..1 %s', (door_current_state))
         if (door_action == 'open') and (door_current_state == 'closed'):
             self.last_action = 'open'
             self.last_action_time = time.time()
