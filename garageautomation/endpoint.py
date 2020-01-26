@@ -29,8 +29,9 @@ def get_door_status(door_id):
 # do something with our door endpoint
 @app.route("/action/<door_id>/<action>", methods=['POST'])
 def action_door(door_id, action):
-    action_status = controller.toggle(door_id,action)
-    return jsonify(action_status)
+    action_status = controller.toggle(door_id, action)
+    return action_status
+    #return jsonify(action_status)
     # return "Lets do something with ths door.. %s:%s" % (door, action)
 
 if __name__ == "__main__":

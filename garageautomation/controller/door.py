@@ -56,6 +56,7 @@ class Door(object):
 
     def toggle_relay(self, door_action):
         door_current_state = self.get_state()
+        print('testing..1 %s', door_current_state)
         if (door_action == 'open') and (door_current_state == 'closed'):
             self.last_action = 'open'
             self.last_action_time = time.time()
@@ -70,7 +71,7 @@ class Door(object):
                 return 'SUCCESS: Successful action - door opening'
             else:
                 return 'ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
-                self.id, door_action, self.last_action_time)
+                    self.id, door_action, self.last_action_time)
         elif (door_action == 'close') and (door_current_state == 'opened'):
             self.last_action = 'close'
             self.last_action_time = time.time()
