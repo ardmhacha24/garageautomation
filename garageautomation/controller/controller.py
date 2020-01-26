@@ -79,11 +79,14 @@ class Controller(object):
     #                     message = "%s's garage door is now closed after %s  "% (door.name, etime)
     #             door.open_time = time.time()
 
-    def toggle(self, door_id, action=None):
+    def toggle(self, door_id, action):
         for d in self.doors:
             if d.id == door_id:
-                syslog.syslog('%s: toggled' % d.name)
-                d.toggle_relay(action)
+                #syslog.syslog('%s: toggled' % d.name)
+                action_status = d.toggle_relay(action)
+                return action_status
+            else:
+                return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
 
     def get_updates(self, lastupdate):
         updates = []

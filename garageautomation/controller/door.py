@@ -62,18 +62,38 @@ class Door(object):
             gpio.output(self.open_pin, False)
             time.sleep(0.2)
             gpio.output(self.open_pin, True)
+            # pausing to allow movement from sensor
+            time.sleep(4)
+            door_current_state = self.get_state()
+            # checking that the door is in movement
+            if door_current_state == 'opening':
+                return 'Successful action - door opening'
+            else:
+                return 'ERROR - didnt kick off your requested action: %s:%s:%s', (
+                self.id, door_action, self.last_action_time)
         elif (door_action == 'close') and (door_current_state == 'opened'):
             self.last_action = 'close'
             self.last_action_time = time.time()
             gpio.output(self.close_pin, False)
             time.sleep(0.2)
             gpio.output(self.close_pin, True)
+            # pausing to allow movement from sensor
+            time.sleep(4)
+            door_current_state = self.get_state()
+            # checking that the door is in movement
+            if door_current_state == 'closing':
+                return 'Successful action - door closing'
+            else:
+                return "ERROR - we didnt kick off your requested action: %s:%s:%s", (
+                    self.id, door_action, self.last_action_time)
         elif (door_current_state == 'opening') or (door_current_state == 'closing'):
-            print('Took no action - already moving... %s:%s:%s',
-                  (door_current_state, self.last_action, self.last_action_time))
-        elif (door_current_state == 'opening error - taking too long') or (door_current_state == 'closing error - taking too long'):
-            print('ERROR - investigate as taking too long... %s:%s:%s',
-                  (door_current_state, self.last_action, self.last_action_time))
+            return ('INFO: Took no action - already moving... %s:%s:%s',
+                    (door_current_state, self.last_action, self.last_action_time))
+        elif (door_current_state == 'opening error - taking too long') or (
+                door_current_state == 'closing error - taking too long'):
+            return ('ERROR - investigate as taking too long... %s:%s:%s',
+                    (door_current_state, door_action, self.last_action_time))
         else:
             self.last_action = None
             self.last_action_time = None
+            return None

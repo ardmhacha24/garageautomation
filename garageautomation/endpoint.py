@@ -21,15 +21,17 @@ def get_doors_all_status():
     return jsonify(all_status)
 
 # check individual door status endpoint
-@app.route('/doors/<door>', methods=['GET'])
-def get_door_status(door):
-    status = controller.get_door_status(door)
+@app.route('/doors/<door_id>', methods=['GET'])
+def get_door_status(door_id):
+    status = controller.get_door_status(door_id)
     return jsonify(status)
 
 # do something with our door endpoint
-@app.route("/action/<door>/<action>", methods=['POST'])
-def action(door, action):
-    return "Lets do somethimg with ths door.. %s:%s" % (door, action)
+@app.route("/action/<door_id>/<action>", methods=['POST'])
+def action_door(door_id, action):
+    action_status = controller.toggle(door_id,action)
+    return jsonify(action_status)
+    # return "Lets do something with ths door.. %s:%s" % (door, action)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
