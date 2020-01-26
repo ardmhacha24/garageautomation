@@ -15,10 +15,10 @@ class Door(object):
         # door action times and status
         self.time_to_openclose = config.get('approx_time_to_openclose', 10)
         self.open_time = time.time()
-        self.last_state = 'unknown'
-        self.last_state_time = time.time()
         self.last_action = None
         self.last_action_time = None
+        self.last_state = self.get_state()
+        self.last_state_time = time.time()
 
         # setting up open/close pins
         gpio.setup(self.open_pin, gpio.OUT)
@@ -31,28 +31,27 @@ class Door(object):
         gpio.setup(self.opened_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
 
     def get_state(self):
-        if gpio.input(self.closed_state_pin) == self.pin_closed_value:
+        if (gpio.input(self.closed_state_pin) == self.pin_closed_value) and \
+                (gpio.input(self.opened_state_pin) != self.pin_closed_value):
             return 'closed'
-        elif self.last_action == 'open':
-            if gpio.input(self.opened_state_pin) == self.pin_closed_value:
-                return 'opened'
-            elif (time.time() - self.last_action_time >= self.time_to_openclose) and (
-                    gpio.input(self.opened_state_pin) != self.pin_closed_value) \
-                    and (gpio.input(self.closed_state_pin) != self.pin_closed_value):
-                return 'opening error - taking too long'
-            else:
-                return 'opening'
-        elif self.last_action == 'close':
-            if gpio.input(self.closed_state_pin) == self.pin_closed_value:
-                return 'closed'
-            elif (time.time() - self.last_action_time >= self.time_to_openclose) and (
-                    gpio.input(self.closed_state_pin) != self.pin_closed_value) \
-                    and (gpio.input(self.opened_state_pin) != self.pin_closed_value):
-                return 'closing error - taking too long'
-            else:
-                return 'closing'
-        else:
+        elif gpio.input(self.opened_state_pin) == self.pin_closed_value and \
+                (gpio.input(self.closed_state_pin) != self.pin_closed_value):
             return 'opened'
+        else:
+            if self.last_action == 'open':
+                if (time.time() - self.last_action_time >= self.time_to_openclose) and (
+                        gpio.input(self.opened_state_pin) != self.pin_closed_value) \
+                        and (gpio.input(self.closed_state_pin) != self.pin_closed_value):
+                    return 'ERROR: opening is taking too long...'
+                else:
+                    return 'opening'
+            elif self.last_action == 'close':
+                if (time.time() - self.last_action_time >= self.time_to_openclose) and (
+                        gpio.input(self.closed_state_pin) != self.pin_closed_value) \
+                        and (gpio.input(self.opened_state_pin) != self.pin_closed_value):
+                    return 'ERROR: closing is taking too long...'
+                else:
+                    return 'closing'
 
     def toggle_relay(self, action_requested):
         door_current_state = self.get_state()
