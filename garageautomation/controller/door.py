@@ -54,27 +54,32 @@ class Door(object):
         else:
             return 'opened'
 
-    def toggle_relay(self, door_action):
+    def toggle_relay(self, action_requested):
         door_current_state = self.get_state()
-        print("A - door_action:", door_action, " [] current_door_state:", door_current_state)
-        if (door_action == 'open') and (door_current_state == 'closed'):
+        print("A - action_requested:", action_requested, " [] current_door_state:", door_current_state)
+        if (action_requested == 'open') and (door_current_state == 'closed'):
             self.last_action = 'open'
             self.last_action_time = time.time()
             gpio.output(self.open_pin, False)
             time.sleep(0.2)
             gpio.output(self.open_pin, True)
+            print("B1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             # pausing to allow movement from sensor
             time.sleep(6)
-            print("B1 - door_action:", door_action, " [] current_door_state:", door_current_state)
+            print(time.time(), "B2 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             door_current_state = self.get_state()
-            print("B2 - door_action:", door_action, " [] current_door_state:", door_current_state)
+            print(time.strftime('%X %x %Z'), "B3 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             # checking that the door is in movement
             if door_current_state == 'opening':
+                print(time.strftime('%X %x %Z'), "B4 - action_requested:", action_requested, " [] current_door_state:",
+                      door_current_state)
                 return 'SUCCESS: Successful action - door opening'
             else:
+                print(time.strftime('%X %x %Z'), "B5 - action_requested:", action_requested, " [] current_door_state:",
+                      door_current_state)
                 return ('ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
-                    self.id, door_action, self.last_action_time))
-        elif (door_action == 'close') and (door_current_state == 'opened'):
+                    self.id, action_requested, self.last_action_time))
+        elif (action_requested == 'close') and (door_current_state == 'opened'):
             self.last_action = 'close'
             self.last_action_time = time.time()
             gpio.output(self.close_pin, False)
@@ -88,16 +93,16 @@ class Door(object):
                 return 'SUCCESS: Successful action - door closing'
             else:
                 return ('ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
-                    self.id, door_action, self.last_action_time))
+                    self.id, action_requested, self.last_action_time))
         elif (door_current_state == 'opening') or (door_current_state == 'closing'):
             return ('INFO: Took no action - already moving... %s:%s:%s',
                     (door_current_state, self.last_action, self.last_action_time))
         elif (door_current_state == 'opening error - taking too long') or (
                 door_current_state == 'closing error - taking too long'):
             return ('ERROR: action time to complete - investigate as taking too long... %s:%s:%s',
-                    (door_current_state, door_action, self.last_action_time))
+                    (door_current_state, action_requested, self.last_action_time))
         else:
             self.last_action = None
             self.last_action_time = None
-            print("D1 - door_action:", door_action, " [] current_door_state:", door_current_state)
+            print("D1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             return None

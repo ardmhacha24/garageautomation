@@ -12,7 +12,7 @@ controller = Controller(config)
 
 @app.route('/')
 def index():
-    return "Hello, World!"
+    return "Nothing to see here..."
 
 # check all door status endpoint
 @app.route('/doors', methods=['GET'])
@@ -23,8 +23,8 @@ def get_doors_all_status():
 # check individual door status endpoint
 @app.route('/doors/<door_id>', methods=['GET'])
 def get_door_status(door_id):
-    status = controller.get_door_status(door_id)
-    return jsonify(status)
+    door_status = controller.get_door_status(door_id)
+    return jsonify(door_status)
 
 # do something with our door endpoint
 @app.route("/action/<door_id>/<action>", methods=['POST'])

@@ -58,20 +58,22 @@ class Controller(object):
         ]
         return door_all_status
 
-    def toggle(self, door_id, action):
-        for d in self.doors:
-            if d.id == door_id:
-                testing_state = d.get_state()
-                print("before toggle - State:", testing_state)
-                action_status = d.toggle_relay(action)
-                if action_status:
-                    return action_status
+    def toggle(self, door_id, action_requested):
+        if (action_requested != 'open') or (action_requested != 'close'):
+            return ('ERROR: Requested Action:[%s] is not supported...',
+                    action_requested)
+        else:
+            for d in self.doors:
+                if d.id == door_id:
+                    action_status = d.toggle_relay(action_requested)
+                    if action_status:
+                        return action_status
+                    else:
+                        return ('INFO: Requested action not done - already in desired state: %s:%s:%s',
+                                (door_id, d.get_state(),action_requested,d.last_action_time))
                 else:
-                    return ('INFO: Requested action not done - already in desired state: %s:%s:%s',
-                            (door_id, d.get_state(),action,d.last_action_time))
-            else:
-                return ('ERROR: Requested Door:ID [%s] does not exist...',
-                        door_id)
+                    return ('ERROR: Requested Door:ID [%s] does not exist...',
+                            door_id)
 
     # def status_check(self):
     #     for door in self.doors:
