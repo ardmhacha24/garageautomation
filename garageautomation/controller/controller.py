@@ -37,7 +37,11 @@ class Controller(object):
                         "pin_check_close": d.close_pin
                     }
                 ]
-        return door_status
+
+        if door_status == None:
+            return 'ERROR: Requested Door:ID [%s] does not exist...' (door_id)
+        else:
+            return door_status
 
     def get_all_door_status(self):
         door_all_status = [
@@ -46,7 +50,7 @@ class Controller(object):
                 "name": d.name,
                 "last_state": d.last_state,
                 "last_state_time": d.last_state_time,
-                "pin_check_open" : d.open_pin,
+                "pin_check_open": d.open_pin,
                 "pin_check_close": d.close_pin
             }
             for d in self.doors
