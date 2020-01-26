@@ -81,9 +81,12 @@ class Controller(object):
 
     def toggle(self, door_id, action):
         for d in self.doors:
+            print "in door loop in toggle %s", (d.id)
             if d.id == door_id:
                 #syslog.syslog('%s: toggled' % d.name)
+                print "stepping into toggle relay %s", (d.id)
                 action_status = d.toggle_relay(action)
+                print "actioned %s", (action_status)
                 return action_status
             else:
                 return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
