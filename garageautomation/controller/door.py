@@ -12,6 +12,15 @@ class Door(object):
         self.opened_state_pin = config['opened_state_pin']
         self.pin_closed_value = config.get('pin_closed_value', 0)
 
+        # setting up open/close pins
+        gpio.setup(self.open_pin, gpio.OUT)
+        gpio.output(self.open_pin, True)
+        gpio.setup(self.close_pin, gpio.OUT)
+        gpio.output(self.close_pin, True)
+        # setting up door status reed switches
+        gpio.setup(self.closed_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
+        gpio.setup(self.opened_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
+
         # door action times and status
         self.time_to_openclose = config.get('approx_time_to_openclose', 10)
         self.open_time = time.time()
@@ -19,16 +28,6 @@ class Door(object):
         self.last_action_time = None
         self.last_state = self.get_state()
         self.last_state_time = time.time()
-
-        # setting up open/close pins
-        gpio.setup(self.open_pin, gpio.OUT)
-        gpio.output(self.open_pin, True)
-        gpio.setup(self.close_pin, gpio.OUT)
-        gpio.output(self.close_pin, True)
-
-        # setting up door status reed switches
-        gpio.setup(self.closed_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
-        gpio.setup(self.opened_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
 
     def get_state(self):
         if (gpio.input(self.closed_state_pin) == self.pin_closed_value) and \
