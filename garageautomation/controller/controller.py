@@ -3,6 +3,8 @@ import time
 import syslog
 # import uuid
 # import smtplib
+from typing import List
+
 import RPi.GPIO as gpio
 # import json
 from .door import Door
@@ -15,14 +17,11 @@ class Controller(object):
         gpio.cleanup()
         gpio.setmode(gpio.BCM)
         self.config = config
-        self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
-        for door in self.doors:
-            door.last_state = 'unknown'
-            door.last_state_time = time.time()
-
         self.use_alerts = config['config']['use_alerts']
         self.alert_type = config['alerts']['alert_type']
         self.ttw = config['alerts']['time_to_wait']
+        # retrieving door configs
+        self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
 
     def get_door_status(self, door_id):
         door_status = []
@@ -50,7 +49,7 @@ class Controller(object):
                 "pin_check_open" : d.open_pin,
                 "pin_check_close": d.close_pin
             }
-            for d in self.door
+            for d in self.doors
         ]
         return door_all_status
 

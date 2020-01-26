@@ -16,9 +16,8 @@ def index():
 
 # check all door status endpoint
 @app.route('/doors', methods=['GET'])
-def get_doors_allstatus():
+def get_doors_all_status():
     all_status = controller.get_all_door_status()
-    assert isinstance(all_status, object)
     return jsonify(all_status)
 
 # check individual door status endpoint
