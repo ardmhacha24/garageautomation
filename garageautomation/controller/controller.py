@@ -38,10 +38,10 @@ class Controller(object):
                     }
                 ]
 
-        if door_status == None:
-            return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
-        else:
+        if door_status:
             return door_status
+        else:
+            return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
 
     def get_all_door_status(self):
         door_all_status = [
