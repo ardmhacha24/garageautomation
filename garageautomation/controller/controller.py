@@ -41,7 +41,8 @@ class Controller(object):
         if door_status:
             return door_status
         else:
-            return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
+            return ('ERROR: Requested Door:ID [%s] does not exist...',
+                    door_id)
 
     def get_all_door_status(self):
         door_all_status = [
@@ -62,11 +63,15 @@ class Controller(object):
             if d.id == door_id:
                 testing_state = d.get_state()
                 print("before toggle - State:", testing_state)
-                action_outcome = d.toggle_relay(action)
-                print("in toggle.. Action_Outcome:", action_outcome)
-                return action_outcome
+                action_status = d.toggle_relay(action)
+                if action_status:
+                    return action_status
+                else:
+                    return ('INFO: Requested action not done - already in desired state: %s:%s:%s',
+                            (door_id, d.get_state(),action,d.last_action_time))
             else:
-                return "ERROR: Requested Door:ID [%s] does not exist...", (door_id)
+                return ('ERROR: Requested Door:ID [%s] does not exist...',
+                        door_id)
 
     # def status_check(self):
     #     for door in self.doors:

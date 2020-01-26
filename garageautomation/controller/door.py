@@ -56,7 +56,7 @@ class Door(object):
 
     def toggle_relay(self, door_action):
         door_current_state = self.get_state()
-        print("A - door_action:", door_action," [] current_door_state:", door_current_state)
+        print("A - door_action:", door_action, " [] current_door_state:", door_current_state)
         if (door_action == 'open') and (door_current_state == 'closed'):
             self.last_action = 'open'
             self.last_action_time = time.time()
@@ -65,7 +65,7 @@ class Door(object):
             gpio.output(self.open_pin, True)
             # pausing to allow movement from sensor
             time.sleep(6)
-            print("B1 - door_action:", door_action," [] current_door_state:", door_current_state)
+            print("B1 - door_action:", door_action, " [] current_door_state:", door_current_state)
             door_current_state = self.get_state()
             print("B2 - door_action:", door_action, " [] current_door_state:", door_current_state)
             # checking that the door is in movement
@@ -87,8 +87,8 @@ class Door(object):
             if door_current_state == 'closing':
                 return 'SUCCESS: Successful action - door closing'
             else:
-                return 'ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
-                    self.id, door_action, self.last_action_time)
+                return ('ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
+                    self.id, door_action, self.last_action_time))
         elif (door_current_state == 'opening') or (door_current_state == 'closing'):
             return ('INFO: Took no action - already moving... %s:%s:%s',
                     (door_current_state, self.last_action, self.last_action_time))
