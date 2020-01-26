@@ -26,8 +26,8 @@ def get_door_status(door):
     status = controller.get_door_status(door)
     return jsonify(status)
 
-# do something with our door
-@app.route("/<door>/<action>", methods=['POST'])
+# do something with our door endpoint
+@app.route("/action/<door>/<action>", methods=['POST'])
 def action(door, action):
     return "Lets do somethimg with ths door.. %s:%s" % (door, action)
 
