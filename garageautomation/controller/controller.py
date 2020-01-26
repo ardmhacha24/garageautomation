@@ -16,11 +16,12 @@ class Controller(object):
         gpio.setwarnings(False)
         gpio.cleanup()
         gpio.setmode(gpio.BCM)
+        # retrieving core config settings
         self.config = config
         self.use_alerts = config['config']['use_alerts']
         self.alert_type = config['alerts']['alert_type']
         self.ttw = config['alerts']['time_to_wait']
-        # retrieving door configs
+        # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
 
     def get_door_status(self, door_id):
@@ -37,11 +38,10 @@ class Controller(object):
                         "last_action_time": d.last_action_time
                     }
                 ]
-
         if door_status:
             return door_status
         else:
-            return ('ERROR: Requested Door:ID [%s] does not exist...',
+            return ('ERROR: Requested Door ID: [%s] does not exist...',
                     door_id)
 
     def get_all_door_status(self):
@@ -60,9 +60,6 @@ class Controller(object):
 
     def toggle(self, door_id, action_requested):
         if (action_requested == 'open') or (action_requested == 'close'):
-            return ('ERROR: Requested Action:[%s] is not supported...',
-                    action_requested)
-        else:
             for d in self.doors:
                 if d.id == door_id:
                     action_status = d.toggle_relay(action_requested)
@@ -72,8 +69,11 @@ class Controller(object):
                         return ('INFO: Requested action not done - already in desired state: %s:%s:%s',
                                 (door_id, d.get_state(),action_requested,d.last_action_time))
                 else:
-                    return ('ERROR: Requested Door:ID [%s] does not exist...',
+                    return ('ERROR: Requested Door ID: [%s] does not exist...',
                             door_id)
+        else:
+            return ('ERROR: Requested Action:[%s] is not supported... [open | close]',
+                    action_requested)
 
     # def status_check(self):
     #     for door in self.doors:
