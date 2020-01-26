@@ -85,7 +85,7 @@ class Door(object):
             if door_current_state == 'closing':
                 return 'SUCCESS: Successful action - door closing'
             else:
-                return "ERROR: action failure - didnt kick off your requested action: %s:%s:%s", (
+                return 'ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
                     self.id, door_action, self.last_action_time)
         elif (door_current_state == 'opening') or (door_current_state == 'closing'):
             return ('INFO: Took no action - already moving... %s:%s:%s',
