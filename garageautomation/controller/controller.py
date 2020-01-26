@@ -59,7 +59,7 @@ class Controller(object):
         return door_all_status
 
     def toggle(self, door_id, action_requested):
-        if (action_requested != 'open') or (action_requested != 'close'):
+        if (action_requested == 'open') or (action_requested == 'close'):
             return ('ERROR: Requested Action:[%s] is not supported...',
                     action_requested)
         else:
