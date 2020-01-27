@@ -17,22 +17,19 @@ gpio.setup(closed_state_pin, gpio.IN, pull_up_down = gpio.PUD_UP)
 
 last_action = None
 
-print ("!!!=====")
-print('Sensor Closed: ', gpio.input(closed_state_pin))
-print('Sensor Open: ', gpio.input(opened_state_pin))
-print ("!!!=====")
-
 # main loop
 try:
 
     while last_action != "Exit":
+        print("AAA=====")
+        print('Sensor Closed: ', gpio.input(closed_state_pin))
+        print('Sensor Open: ', gpio.input(opened_state_pin))
+        print("AAA=====")
+
         last_action = input("Enter a open or close action... [Exit]: ")
         last_action_time = time.time()
 
-        print ("AAA=====")
-        print('Sensor Closed: ', gpio.input(closed_state_pin))
-        print('Sensor Open: ', gpio.input(opened_state_pin))
-        print ("AAA=====")
+        time.sleep(3)
 
         if (gpio.input(closed_state_pin)) and \
                 (not gpio.input(opened_state_pin)):
@@ -56,11 +53,13 @@ try:
                 else:
                     print ('*** closing')
 
-        time.sleep(time_to_openclose)
+        time.sleep(3)
+
         print("BBB=====")
         print('Sensor Closed: ', gpio.input(closed_state_pin))
         print('Sensor Open: ', gpio.input(opened_state_pin))
         print("BBB=====")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 # End program cleanly with keyboard
 except KeyboardInterrupt:
