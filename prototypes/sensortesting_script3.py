@@ -9,13 +9,18 @@ opened_state_pin = 18
 closed_state_pin = 24
 
 pin_closed_value = 0
-time_to_openclose = 5
+time_to_openclose = 7
 
 # Set up the door sensor pin.
 gpio.setup(opened_state_pin, gpio.IN, pull_up_down = gpio.PUD_UP)
 gpio.setup(closed_state_pin, gpio.IN, pull_up_down = gpio.PUD_UP)
 
 last_action = None
+
+print ("!!!=====")
+print('Sensor Closed: ', gpio.input(closed_state_pin))
+print('Sensor Open: ', gpio.input(opened_state_pin))
+print ("!!!=====")
 
 # main loop
 try:
@@ -31,25 +36,25 @@ try:
 
         if (gpio.input(closed_state_pin) == pin_closed_value) and \
                 (gpio.input(opened_state_pin) != pin_closed_value):
-            print ('closed')
+            print ('*** closed')
         elif gpio.input(opened_state_pin) == pin_closed_value and \
                 (gpio.input(closed_state_pin) != pin_closed_value):
-            print ('opened')
+            print ('*** opened')
         else:
             if last_action == 'open':
                 if (time.time() - last_action_time >= time_to_openclose) and (
                         gpio.input(opened_state_pin) != pin_closed_value) \
                         and (gpio.input(closed_state_pin) != pin_closed_value):
-                    print ('ERROR: opening is taking too long...')
+                    print ('*** ERROR: opening is taking too long...')
                 else:
                     print ('opening')
             elif last_action == 'close':
                 if (time.time() - last_action_time >= time_to_openclose) and (
                         gpio.input(closed_state_pin) != pin_closed_value) \
                         and (gpio.input(opened_state_pin) != pin_closed_value):
-                    print ('ERROR: closing is taking too long...')
+                    print ('*** ERROR: closing is taking too long...')
                 else:
-                    print ('closing')
+                    print ('*** closing')
 
         time.sleep(time_to_openclose)
         print("BBB=====")
@@ -60,6 +65,10 @@ try:
 # End program cleanly with keyboard
 except KeyboardInterrupt:
     print ("Quitting Script")
+    print("!!!=====")
+    print('Sensor Closed: ', gpio.input(closed_state_pin))
+    print('Sensor Open: ', gpio.input(opened_state_pin))
+    print("!!!=====")
     # Reset gpio settings
     gpio.cleanup()
     sys.exit(0)
