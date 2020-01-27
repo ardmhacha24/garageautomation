@@ -44,19 +44,23 @@ try:
                 (gpio.input(opened_state_pin)):
             print ('*** opened')
         else:
+
+            print("how long going.. ", (time.time() - last_action_time))
+            print ("time_to_openclose.. ", time_to_openclose)
+            print("last_action_time.. ", last_action_time)
+            print("time.time().. ", time.time())
+
             #if last_action == 'open':
             if copy_last_action == 'open':
-                if (time.time() - last_action_time >= time_to_openclose) and (
-                        gpio.input(opened_state_pin) != pin_closed_value) \
-                        and (gpio.input(closed_state_pin) != pin_closed_value):
+                if (time.time() - last_action_time >= time_to_openclose) and \
+                        (not (gpio.input(opened_state_pin) and (gpio.input(closed_state_pin)))):
                     print ('*** ERROR: opening is taking too long...')
                 else:
                     print ('*** opening')
             #elif last_action == 'close':
             elif copy_last_action == 'close':
-                if (time.time() - last_action_time >= time_to_openclose) and (
-                        gpio.input(closed_state_pin) != pin_closed_value) \
-                        and (gpio.input(opened_state_pin) != pin_closed_value):
+                if (time.time() - last_action_time >= time_to_openclose) and \
+                        (not (gpio.input(opened_state_pin) and (gpio.input(closed_state_pin)))):
                     print ('*** ERROR: closing is taking too long...')
                 else:
                     print ('*** closing')
