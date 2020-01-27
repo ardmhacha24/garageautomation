@@ -32,6 +32,10 @@ try:
             last_action_time = time.time()
 
         time.sleep(3)
+        print("AAA=====")
+        print('copy_last_action: ', copy_last_action)
+        print('last_action_time: ', last_action_time)
+        print("AAA=====")
 
         if (gpio.input(closed_state_pin)) and \
                 (not gpio.input(opened_state_pin)):
@@ -57,10 +61,6 @@ try:
                 else:
                     print ('*** closing')
 
-        print("BBB=====")
-        print('Sensor Closed: ', gpio.input(closed_state_pin))
-        print('Sensor Open: ', gpio.input(opened_state_pin))
-        print("BBB=====")
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 # End program cleanly with keyboard
