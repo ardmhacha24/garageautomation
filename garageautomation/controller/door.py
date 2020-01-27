@@ -61,10 +61,10 @@ class Door(object):
             gpio.output(self.open_pin, False)
             time.sleep(0.2)
             gpio.output(self.open_pin, True)
-            print("B1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
+            print(time.strftime('%X %x %Z'), "B1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             # pausing to allow movement from sensor
             time.sleep(6)
-            print(time.time(), "B2 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
+            print(time.strftime('%X %x %Z'), "B2 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             door_current_state = self.get_state()
             print(time.strftime('%X %x %Z'), "B3 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             # checking that the door is in movement
@@ -100,7 +100,8 @@ class Door(object):
             return ('ERROR: action time to complete - investigate as taking too long... %s:%s:%s',
                     (door_current_state, action_requested, self.last_action_time))
         else:
-            self.last_action = None
-            self.last_action_time = None
+            # commented below out as dont do anything as already in requested state - but will log that the ask occurred in further coding
+            #self.last_action = None
+            #self.last_action_time = None
             print("D1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             return None
