@@ -9,7 +9,7 @@ opened_state_pin = 18
 closed_state_pin = 24
 
 pin_closed_value = 0
-time_to_openclose = 10
+time_to_openclose = 5
 
 # Set up the door sensor pin.
 gpio.setup(opened_state_pin, gpio.IN, pull_up_down = gpio.PUD_UP)
@@ -24,10 +24,10 @@ try:
         last_action = input("Enter a open or close action... [Exit]: ")
         last_action_time = time.time()
 
-        print ("=====")
+        print ("AAA=====")
         print('Sensor Closed: ', gpio.input(closed_state_pin))
         print('Sensor Open: ', gpio.input(opened_state_pin))
-        print ("=====")
+        print ("AAA=====")
 
         if (gpio.input(closed_state_pin) == pin_closed_value) and \
                 (gpio.input(opened_state_pin) != pin_closed_value):
@@ -50,7 +50,12 @@ try:
                     print ('ERROR: closing is taking too long...')
                 else:
                     print ('closing')
-        time.sleep(0.2)
+
+        time.sleep(time_to_openclose)
+        print("BBB=====")
+        print('Sensor Closed: ', gpio.input(closed_state_pin))
+        print('Sensor Open: ', gpio.input(opened_state_pin))
+        print("BBB=====")
 
 # End program cleanly with keyboard
 except KeyboardInterrupt:
