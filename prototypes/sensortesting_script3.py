@@ -1,12 +1,10 @@
-import RPi.gpio as gpio
+import RPi.GPIO as gpio
 import time
 import sys
 
 gpio.setmode(gpio.BCM)
 
-# This is the gpio pin number we have one of the door sensor
-# wires attached to, the other should be attached to a ground
-# Bottom of door Sensor
+# This is the gpio pin number we have the door sensors
 opened_state_pin = 18
 closed_state_pin = 24
 
