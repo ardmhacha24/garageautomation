@@ -32,25 +32,25 @@ class Door(object):
     def get_state(self):
         if (gpio.input(self.closed_state_pin)) and \
                 (not gpio.input(self.opened_state_pin)):
-            print('closed')
+            return 'closed'
         elif (not gpio.input(self.closed_state_pin)) and \
                 (gpio.input(self.opened_state_pin)):
-            print('opened')
+            return 'opened'
         else:
             if self.last_action == 'open':
                 if (int(time.time() - self.last_action_time) >= self.time_to_openclose) and \
                         gpio.input(self.opened_state_pin) and \
                         gpio.input(self.closed_state_pin):
-                    print('ERROR: opening is taking too long...')
+                    return 'ERROR: opening is taking too long...'
                 else:
-                    print('opening')
+                    return 'opening'
             elif self.last_action == 'close':
                 if (int(time.time() - self.last_action_time) >= self.time_to_openclose) and \
                         gpio.input(self.opened_state_pin) and \
                         gpio.input(self.closed_state_pin):
-                    print('ERROR: closing is taking too long...')
+                    return 'ERROR: closing is taking too long...'
                 else:
-                    print('closing')
+                    return 'closing'
 
     def toggle_relay(self, action_requested):
         door_current_state = self.get_state()
@@ -63,7 +63,7 @@ class Door(object):
             gpio.output(self.open_pin, True)
             print(time.strftime('%X %x %Z'), "B1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             # pausing to allow movement from sensor
-            time.sleep(6)
+            time.sleep(1)
             print(time.strftime('%X %x %Z'), "B2 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             door_current_state = self.get_state()
             print(time.strftime('%X %x %Z'), "B3 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
@@ -84,7 +84,7 @@ class Door(object):
             time.sleep(0.2)
             gpio.output(self.close_pin, True)
             # pausing to allow movement from sensor
-            time.sleep(6)
+            time.sleep(1)
             door_current_state = self.get_state()
             # checking that the door is in movement
             if door_current_state == 'closing':

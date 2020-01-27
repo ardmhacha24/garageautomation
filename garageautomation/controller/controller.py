@@ -66,7 +66,7 @@ class Controller(object):
                     if action_status:
                         return action_status
                     else:
-                        return ('INFO: Requested action not done - already in desired state: %s:%s:%s',
+                        return ('INFO: Requested action not took - door already in desired state: %s:%s:%s',
                                 (door_id, d.get_state(),action_requested,d.last_action_time))
                 else:
                     return ('ERROR: Requested Door ID: [%s] does not exist...',
