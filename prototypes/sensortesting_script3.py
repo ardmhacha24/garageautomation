@@ -34,11 +34,11 @@ try:
         print('Sensor Open: ', gpio.input(opened_state_pin))
         print ("AAA=====")
 
-        if (gpio.input(closed_state_pin) == pin_closed_value) and \
-                (gpio.input(opened_state_pin) != pin_closed_value):
+        if (gpio.input(closed_state_pin)) and \
+                (not gpio.input(opened_state_pin)):
             print ('*** closed')
-        elif gpio.input(opened_state_pin) == pin_closed_value and \
-                (gpio.input(closed_state_pin) != pin_closed_value):
+        elif (not gpio.input(closed_state_pin)) and \
+                (gpio.input(opened_state_pin)):
             print ('*** opened')
         else:
             if last_action == 'open':
