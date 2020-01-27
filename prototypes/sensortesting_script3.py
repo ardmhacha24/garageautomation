@@ -34,7 +34,7 @@ try:
         time.sleep(3)
         print("AAA=====")
         print('copy_last_action: ', copy_last_action)
-        print('last_action_time: ', last_action_time)
+        print('last_action: ', last_action)
         print("AAA=====")
 
         if (gpio.input(closed_state_pin)) and \
