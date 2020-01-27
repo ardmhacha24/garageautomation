@@ -12,8 +12,8 @@ pin_closed_value = 0
 time_to_openclose = 7
 
 # Set up the door sensor pin.
-gpio.setup(opened_state_pin, gpio.IN, pull_up_down = gpio.PUD_UP)
-gpio.setup(closed_state_pin, gpio.IN, pull_up_down = gpio.PUD_UP)
+gpio.setup(opened_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
+gpio.setup(closed_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
 
 last_action = None
 
@@ -39,37 +39,37 @@ try:
 
         if (gpio.input(closed_state_pin)) and \
                 (not gpio.input(opened_state_pin)):
-            print ('*** closed')
+            print('*** closed')
         elif (not gpio.input(closed_state_pin)) and \
                 (gpio.input(opened_state_pin)):
-            print ('*** opened')
+            print('*** opened')
         else:
 
-            print("how long going.. ", (time.time() - last_action_time))
-            print ("time_to_openclose.. ", time_to_openclose)
+            print("how long going.. ", int(time.time() - last_action_time))
+            print("time_to_openclose.. ", time_to_openclose)
             print("last_action_time.. ", last_action_time)
             print("time.time().. ", time.time())
 
-            #if last_action == 'open':
+            # if last_action == 'open':
             if copy_last_action == 'open':
-                if (time.time() - last_action_time >= time_to_openclose) and \
+                if (int(time.time() - last_action_time) >= time_to_openclose) and \
                         (not (gpio.input(opened_state_pin) and (gpio.input(closed_state_pin)))):
-                    print ('*** ERROR: opening is taking too long...')
+                    print('*** ERROR: opening is taking too long...')
                 else:
-                    print ('*** opening')
-            #elif last_action == 'close':
+                    print('*** opening')
+            # elif last_action == 'close':
             elif copy_last_action == 'close':
-                if (time.time() - last_action_time >= time_to_openclose) and \
+                if (int(time.time() - last_action_time) >= time_to_openclose) and \
                         (not (gpio.input(opened_state_pin) and (gpio.input(closed_state_pin)))):
-                    print ('*** ERROR: closing is taking too long...')
+                    print('*** ERROR: closing is taking too long...')
                 else:
-                    print ('*** closing')
+                    print('*** closing')
 
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 # End program cleanly with keyboard
 except KeyboardInterrupt:
-    print ("Quitting Script")
+    print("Quitting Script")
     print("!!!=====")
     print('Sensor Closed: ', gpio.input(closed_state_pin))
     print('Sensor Open: ', gpio.input(opened_state_pin))
