@@ -28,6 +28,7 @@ class Controller(object):
         door_status = []
         for d in self.doors:
             if d.id == door_id:
+                d.get_state()
                 door_status = [
                     {
                         "id": d.id,
@@ -35,7 +36,8 @@ class Controller(object):
                         "last_state": d.last_state,
                         "last_state_time": d.last_state_time,
                         "last_action": d.last_action,
-                        "last_action_time": d.last_action_time
+                        "last_action_time": d.last_action_time,
+                        "real_time_state": d.get_state()
                     }
                 ]
         if door_status:
@@ -52,7 +54,8 @@ class Controller(object):
                 "last_state": d.last_state,
                 "last_state_time": d.last_state_time,
                 "last_action": d.last_action,
-                "last_actioon_time": d.last_action_time
+                "last_actioon_time": d.last_action_time,
+                "real_time_state": d.get_state()
             }
             for d in self.doors
         ]

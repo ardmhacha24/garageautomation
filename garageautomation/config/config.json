@@ -30,8 +30,8 @@
             "name":"LEFT",
             "open_pin":12,
             "close_pin":16,
-            "closed_state_pin":18,
-            "opened_state_pin":24,
+            "closed_state_pin":24,
+            "opened_state_pin":18,
             "approx_time_to_openclose":7
         },
         "right":{
