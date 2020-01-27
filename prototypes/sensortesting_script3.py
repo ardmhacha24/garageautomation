@@ -26,8 +26,10 @@ try:
         print('Sensor Open: ', gpio.input(opened_state_pin))
         print("AAA=====")
 
-        last_action = input("Enter a open or close action... [Exit]: ")
-        last_action_time = time.time()
+        last_action = input("Enter a open, close or check action... [Exit]: ")
+        if last_action != 'check':
+            copy_last_action = last_action
+            last_action_time = time.time()
 
         time.sleep(3)
 
@@ -38,14 +40,16 @@ try:
                 (gpio.input(opened_state_pin)):
             print ('*** opened')
         else:
-            if last_action == 'open':
+            #if last_action == 'open':
+            if copy_last_action == 'open':
                 if (time.time() - last_action_time >= time_to_openclose) and (
                         gpio.input(opened_state_pin) != pin_closed_value) \
                         and (gpio.input(closed_state_pin) != pin_closed_value):
                     print ('*** ERROR: opening is taking too long...')
                 else:
                     print ('*** opening')
-            elif last_action == 'close':
+            #elif last_action == 'close':
+            elif copy_last_action == 'close':
                 if (time.time() - last_action_time >= time_to_openclose) and (
                         gpio.input(closed_state_pin) != pin_closed_value) \
                         and (gpio.input(opened_state_pin) != pin_closed_value):
