@@ -53,27 +53,21 @@ class Door(object):
 
     def toggle_relay(self, action_requested):
         door_current_state = self.get_state()
-        print("A - action_requested:", action_requested, " [] current_door_state:", door_current_state)
+        #print("A - action_requested:", action_requested, " [] current_door_state:", door_current_state)
         if (action_requested == 'open') and (door_current_state == 'closed'):
             self.last_action = 'open'
             self.last_action_time = time.time()
             gpio.output(self.open_pin, False)
             time.sleep(0.2)
             gpio.output(self.open_pin, True)
-            print(time.strftime('%X %x %Z'), "B1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
+            #print(time.strftime('%X %x %Z'), "B1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             # pausing to allow movement from sensor
             time.sleep(1)
-            print(time.strftime('%X %x %Z'), "B2 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             door_current_state = self.get_state()
-            print(time.strftime('%X %x %Z'), "B3 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             # checking that the door is in movement
             if door_current_state == 'opening':
-                print(time.strftime('%X %x %Z'), "B4 - action_requested:", action_requested, " [] current_door_state:",
-                      door_current_state)
                 return 'SUCCESS: Successful action - door opening'
             else:
-                print(time.strftime('%X %x %Z'), "B5 - action_requested:", action_requested, " [] current_door_state:",
-                      door_current_state)
                 return ('ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
                     self.id, action_requested, self.last_action_time))
         elif (action_requested == 'close') and (door_current_state == 'opened'):
@@ -102,5 +96,4 @@ class Door(object):
             # commented below out as dont do anything as already in requested state - but will log that the ask occurred in further coding
             #self.last_action = None
             #self.last_action_time = None
-            print("D1 - action_requested:", action_requested, " [] current_door_state:", door_current_state)
             return None
