@@ -32,7 +32,6 @@
             "close_pin":16,
             "closed_state_pin":18,
             "opened_state_pin":24,
-            "pin_closed_value":0,
             "approx_time_to_openclose":7
         },
         "right":{
@@ -41,7 +40,6 @@
             "close_pin":21,
             "closed_state_pin":1,
             "opened_state_pin":2,
-            "pin_closed_value":0,
             "approx_time_to_openclose":7
         }
     }

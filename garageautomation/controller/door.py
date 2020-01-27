@@ -10,7 +10,6 @@ class Door(object):
         self.close_pin = config['close_pin']
         self.closed_state_pin = config['closed_state_pin']
         self.opened_state_pin = config['opened_state_pin']
-        self.pin_closed_value = config.get('pin_closed_value', 0)
 
         # setting up open/close pins
         gpio.setup(self.open_pin, gpio.OUT)
@@ -22,7 +21,7 @@ class Door(object):
         gpio.setup(self.opened_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
 
         # door action times and status
-        self.time_to_openclose = config.get('approx_time_to_openclose', 10)
+        self.time_to_openclose = config['approx_time_to_openclose']
         self.open_time = time.time()
         self.last_action = None
         self.last_action_time = None
