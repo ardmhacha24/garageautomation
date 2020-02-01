@@ -3,8 +3,8 @@ import time
 
 
 class Door(object):
-    def __init__(self, doorId, config):
-        self.id = doorId
+    def __init__(self, door_id, config):
+        self.id = door_id
         self.name = config['name']
         self.open_pin = config['open_pin']
         self.close_pin = config['close_pin']
