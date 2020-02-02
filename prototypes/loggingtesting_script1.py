@@ -31,9 +31,9 @@ if not os.path.exists(log_path):
         if exc.errno != errno.EEXIST:
             raise
 
-# Log startup
-logger.info('---------- Starting up!')
-logger.info('__name__ is \'%s\'' % __name__)
-logger.debug('Loading default config file from \'%s\'' % log_path)
-logger.debug('Looking for custom app config in \'%s\'' % log_path, 'app.cfg')
+for _ in range(1000):
+    logger.info('---------- Starting up!')
+    logger.info('__name__ is \'%s\'' % __name__)
+    logger.debug('Loading default config file from \'%s\'' % log_path)
+    logger.error('Looking for custom app config in \'%s\'' % log_path, 'app.cfg')
 
