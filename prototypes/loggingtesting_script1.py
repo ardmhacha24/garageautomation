@@ -10,8 +10,10 @@ LOGFILE_BACKUP_COUNT = 10
 
 # Set up logging
 logger = logging.getLogger("garage_logs")
+log_path = './testing/garage_webserver.log'
+
 # app.logger_name = "WEBSRVR"
-file_handler = RotatingFileHandler('./testing/garage_webserver.log',
+file_handler = RotatingFileHandler(log_path,
                                    LOGFILE_MODE, \
                                    LOGFILE_MAXSIZE,
                                    LOGFILE_BACKUP_COUNT)
@@ -21,10 +23,10 @@ logger.addHandler(file_handler)
 #app.debug_log_format = '%(relativeCreated)-6d [%(process)-5d:%(thread)#x] %(levelname)-5s %(message)s [in %(module)s @ %(pathname)s:%(lineno)d]'
 #app.logger.setLevel(logging.DEBUG)
 
-if not os.path.exists('./testing/garage_webserver.log'):
+if not os.path.exists(log_path):
     try:
         print ("=======hkjjjkhkhkjhkh££%£$^^")
-        os.makedirs(os.path.dirname('./testing/garage_webserver.log'))
+        os.makedirs(os.path.dirname(log_path))
     except OSError as exc:  # Guard against race condition
         if exc.errno != errno.EEXIST:
             raise
