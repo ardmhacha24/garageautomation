@@ -1,4 +1,5 @@
 import logging
+from logging.handlers import RotatingFileHandler
 import os
 import errno
 import sys
@@ -10,14 +11,13 @@ LOGFILE_BACKUP_COUNT = 10
 
 # Set up logging
 logger = logging.getLogger("garage_logs")
+logger.setLevel(logging.DEBUG)
 log_path = './testing/garage_webserver.log'
 
-# app.logger_name = "WEBSRVR"
 file_handler = RotatingFileHandler(log_path,
                                    LOGFILE_MODE, \
                                    LOGFILE_MAXSIZE,
                                    LOGFILE_BACKUP_COUNT)
-file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(logging.Formatter(LOGFILE_FORMAT))
 logger.addHandler(file_handler)
 #app.debug_log_format = '%(relativeCreated)-6d [%(process)-5d:%(thread)#x] %(levelname)-5s %(message)s [in %(module)s @ %(pathname)s:%(lineno)d]'
