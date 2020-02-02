@@ -32,13 +32,13 @@ class Controller(object):
 
     def create_logger(self):
         # Check whether the specified logs exists or not
-        if not os.path.exists(os.path.dirname(self.config['config']['logs'])):
-            try:
-                print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'], "££%£$^^")
-                os.makedirs(os.path.dirname(self.config['config']['logs']))
-            except OSError as exc:  # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
+        #if not os.path.exists(os.path.dirname(self.config['config']['logs'])):
+        #    try:
+        #        print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'], "££%£$^^")
+        #        os.makedirs(os.path.dirname(self.config['config']['logs']))
+        #    except OSError as exc:  # Guard against race condition
+        #        if exc.errno != errno.EEXIST:
+        #            raise
 
         logger = logging.getLogger('garage_logs')
         logger.basicConfig(level=logging.DEBUG,
