@@ -34,6 +34,6 @@ if not os.path.exists(log_path):
 # Log startup
 logger.info('---------- Starting up!')
 logger.info('__name__ is \'%s\'' % __name__)
-logger.debug('Loading default config file from \'%s\'' % default_cfg_file)
-logger.debug('Looking for custom app config in \'%s\'' % os.path.join(app.instance_path, 'app.cfg'))
+logger.debug('Loading default config file from \'%s\'' % log_path)
+logger.debug('Looking for custom app config in \'%s\'' % log_path, 'app.cfg')
 
