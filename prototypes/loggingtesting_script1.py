@@ -23,8 +23,8 @@ logger.addHandler(file_handler)
 
 if not os.path.exists('./testing/garage_webserver.log'):
     try:
-        print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'], "££%£$^^")
-        os.makedirs(os.path.dirname(self.config['config']['logs']))
+        print ("=======hkjjjkhkhkjhkh££%£$^^")
+        os.makedirs(os.path.dirname('./testing/garage_webserver.log'))
     except OSError as exc:  # Guard against race condition
         if exc.errno != errno.EEXIST:
             raise
