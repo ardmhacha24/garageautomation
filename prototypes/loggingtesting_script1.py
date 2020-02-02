@@ -21,7 +21,7 @@ logger.addHandler(file_handler)
 #app.debug_log_format = '%(relativeCreated)-6d [%(process)-5d:%(thread)#x] %(levelname)-5s %(message)s [in %(module)s @ %(pathname)s:%(lineno)d]'
 #app.logger.setLevel(logging.DEBUG)
 
-if not os.path.exists(os.path.dirname('./testing/garage_webserver.log'):
+if not os.path.exists('./testing/garage_webserver.log'):
     try:
         print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'], "££%£$^^")
         os.makedirs(os.path.dirname(self.config['config']['logs']))
