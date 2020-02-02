@@ -41,11 +41,6 @@ class Controller(object):
         #            raise
 
         logger = logging.getLogger('garage_logs')
-        logger.basicConfig(level=logging.DEBUG,
-                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                            datefmt='%y-%m-%d %H:%M',
-                            filename=self.config['config']['logs'],
-                            filemode='w')
         # create file handler which logs even debug messages
         fh = logging.FileHandler(self.config['config']['logs'])
         fh.setLevel(logging.INFO)
