@@ -26,7 +26,7 @@ class Controller(object):
         self.ttw = config['alerts']['time_to_wait']
         # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
-        ("hkjjjkhkhkjhkh", self.config['config']['logs'])
+        print ("hkjjjkhkhkjhkh", self.config['config']['logs'], "ghgjghjhgyuyuu0000")
         self.logger = self.create_logger()
         self.logger.info('garage automation system started up')
 
@@ -34,7 +34,7 @@ class Controller(object):
         # Check whether the specified logs exists or not
         if not os.path.exists(os.path.dirname(self.config['config']['logs'])):
             try:
-                print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'])
+                print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'], "££%£$^^")
                 os.makedirs(os.path.dirname(self.config['config']['logs']))
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:
