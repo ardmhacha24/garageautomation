@@ -26,9 +26,10 @@ logger.addHandler(file_handler)
 os.path.exists()
 
 if not os.path.exists(log_path):
+    print("=======hkjjjkhkhkjhkh££%£$^^")
     #try:
-        print ("=======hkjjjkhkhkjhkh££%£$^^")
-    #       os.makedirs(os.path.dirname(log_path))
+    #   print ("=======hkjjjkhkhkjhkh££%£$^^")
+    #   os.makedirs(os.path.dirname(log_path))
     #except OSError as exc:  # Guard against race condition
     #    if exc.errno != errno.EEXIST:
     #        raise
