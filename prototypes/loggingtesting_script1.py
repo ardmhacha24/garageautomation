@@ -12,7 +12,7 @@ LOGFILE_BACKUP_COUNT = 10
 # Set up logging
 logger = logging.getLogger("garage_logs")
 logger.setLevel(logging.DEBUG)
-log_path = './testing/garage_webserver.log'
+log_path = './garage_webserver.log'
 
 file_handler = RotatingFileHandler(log_path,
                                    LOGFILE_MODE, \
@@ -23,13 +23,15 @@ logger.addHandler(file_handler)
 #app.debug_log_format = '%(relativeCreated)-6d [%(process)-5d:%(thread)#x] %(levelname)-5s %(message)s [in %(module)s @ %(pathname)s:%(lineno)d]'
 #app.logger.setLevel(logging.DEBUG)
 
+os.path.exists()
+
 if not os.path.exists(log_path):
-    try:
+    #try:
         print ("=======hkjjjkhkhkjhkh££%£$^^")
-        os.makedirs(os.path.dirname(log_path))
-    except OSError as exc:  # Guard against race condition
-        if exc.errno != errno.EEXIST:
-            raise
+    #       os.makedirs(os.path.dirname(log_path))
+    #except OSError as exc:  # Guard against race condition
+    #    if exc.errno != errno.EEXIST:
+    #        raise
 
 for _ in range(1000):
     logger.info('---------- Starting up!')
