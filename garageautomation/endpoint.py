@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # setting up flask framework for our endoint
 import json
 from flask import Flask, jsonify
@@ -35,5 +36,9 @@ def action_door(door_id, action):
     return jsonify(action_status)
 
 
-if __name__ == "__main__":
+def run():
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
+
+
+if __name__ == "__main__":
+    run()
