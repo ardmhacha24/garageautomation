@@ -26,26 +26,24 @@ class Controller(object):
         self.ttw = config['alerts']['time_to_wait']
         # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
+        print ("hkjjjkhkhkjhkh", self.config['config']['logs'], "ghgjghjhgyuyuu0000")
         self.logger = self.create_logger()
+        self.logger.info('garage automation system started up')
 
     def create_logger(self):
         # Check whether the specified logs exists or not
-        if not os.path.exists(os.path.dirname(self.config['config']['logs'])):
-            try:
-                os.makedirs(os.path.dirname(self.config['config']['logs']))
-            except OSError as exc:  # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
+        #if not os.path.exists(os.path.dirname(self.config['config']['logs'])):
+        #    try:
+        #        print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'], "££%£$^^")
+        #        os.makedirs(os.path.dirname(self.config['config']['logs']))
+        #    except OSError as exc:  # Guard against race condition
+        #        if exc.errno != errno.EEXIST:
+        #            raise
 
         logger = logging.getLogger('garage_logs')
-        logger.basicConfig(level=logging.DEBUG,
-                            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                            datefmt='%y-%m-%d %H:%M',
-                            filename=self.config['config']['logs'],
-                            filemode='w')
         # create file handler which logs even debug messages
         fh = logging.FileHandler(self.config['config']['logs'])
-        fh.setLevel(logging.DEBUG)
+        fh.setLevel(logging.INFO)
         # create console handler with a higher log level
         ch = logging.StreamHandler()
         ch.setLevel(logging.ERROR)
@@ -98,6 +96,8 @@ class Controller(object):
 
     def toggle(self, door_id, action_requested):
         if (action_requested == 'open') or (action_requested == 'close'):
+            # logging the action request to build up a door view history
+            self.logger.info('Action requested on door %s:%s',door_id, action_requested)
             for d in self.doors:
                 if d.id == door_id:
                     action_status = d.toggle_relay(action_requested)
