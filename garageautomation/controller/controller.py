@@ -27,6 +27,7 @@ class Controller(object):
         # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
         # retrieving logs location and setting up
+        print("root_dir: ", root_dir, "AAAA")
         self.app_root = root_dir
         self.app_log_path = os.path.join(self.app_root, self.config['config']['logs'])
         self.logger = self.create_logger()
@@ -41,7 +42,7 @@ class Controller(object):
         # Check whether the specified logs exists or not
         if not os.path.exists(os.path.dirname(self.app_log_path)):
             try:
-                print ("HHHHHH", self.app_log_path)
+                print ("app_log_path: ", self.app_log_path)
                 os.makedirs(os.path.dirname(self.app_log_path))
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:
