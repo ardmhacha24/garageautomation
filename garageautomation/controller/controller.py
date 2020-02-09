@@ -41,6 +41,7 @@ class Controller(object):
         # Check whether the specified logs exists or not
         if not os.path.exists(os.path.dirname(self.app_log_path)):
             try:
+                print ("HHHHHH", self.app_log_path)
                 os.makedirs(os.path.dirname(self.app_log_path))
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:
