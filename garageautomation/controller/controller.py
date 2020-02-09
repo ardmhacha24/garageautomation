@@ -1,6 +1,7 @@
 import errno
 import time
 import logging
+from logging.handlers import RotatingFileHandler
 import os
 # import sys
 import syslog
@@ -31,29 +32,22 @@ class Controller(object):
         self.logger.info('garage automation system started up')
 
     def create_logger(self):
-        # Check whether the specified logs exists or not
-        #if not os.path.exists(os.path.dirname(self.config['config']['logs'])):
-        #    try:
-        #        print ("=======hkjjjkhkhkjhkh", self.config['config']['logs'], "££%£$^^")
-        #        os.makedirs(os.path.dirname(self.config['config']['logs']))
-        #    except OSError as exc:  # Guard against race condition
-        #        if exc.errno != errno.EEXIST:
-        #            raise
+        LOGFILE_FORMAT = '%(asctime)s [%(process)-5d:%(thread)#x] %(name)s %(levelname)-5s %(message)s [in %(module)s @ %(pathname)s:%(lineno)d]'
+        LOGFILE_MODE = 'a'
+        LOGFILE_MAXSIZE = 1 * 1024 * 1024
+        LOGFILE_BACKUP_COUNT = 10
 
+        # Set up logging
         logger = logging.getLogger('garage_logs')
-        # create file handler which logs even debug messages
-        fh = logging.FileHandler(self.config['config']['logs'])
-        fh.setLevel(logging.INFO)
-        # create console handler with a higher log level
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.ERROR)
-        # create formatter and add it to the handlers
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        ch.setFormatter(formatter)
-        fh.setFormatter(formatter)
-        # add the handlers to logger
-        logger.addHandler(ch)
-        logger.addHandler(fh)
+        logger.setLevel(logging.DEBUG)
+        log_path = self.config['config']['logs']
+
+        file_handler = RotatingFileHandler(log_path,
+                                           LOGFILE_MODE, \
+                                           LOGFILE_MAXSIZE,
+                                           LOGFILE_BACKUP_COUNT)
+        file_handler.setFormatter(logging.Formatter(LOGFILE_FORMAT))
+        logger.addHandler(file_handler)
 
         return logger
 

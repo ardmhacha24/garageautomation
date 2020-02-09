@@ -23,8 +23,6 @@ logger.addHandler(file_handler)
 #app.debug_log_format = '%(relativeCreated)-6d [%(process)-5d:%(thread)#x] %(levelname)-5s %(message)s [in %(module)s @ %(pathname)s:%(lineno)d]'
 #app.logger.setLevel(logging.DEBUG)
 
-os.path.exists()
-
 if not os.path.exists(log_path):
     print("=======hkjjjkhkhkjhkh££%£$^^")
     #try:
@@ -34,7 +32,7 @@ if not os.path.exists(log_path):
     #    if exc.errno != errno.EEXIST:
     #        raise
 
-for _ in range(1000):
+for _ in range(10):
     logger.info('---------- Starting up!')
     logger.info('__name__ is \'%s\'' % __name__)
     logger.debug('Loading default config file from \'%s\'' % log_path)
