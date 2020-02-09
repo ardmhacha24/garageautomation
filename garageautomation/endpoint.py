@@ -10,7 +10,7 @@ app = Flask(__name__)
 root_dir = osp.realpath(osp.dirname(__file__))
 with open(osp.join(root_dir, 'config/config.json')) as config_file:
     config = json.load(config_file)
-controller = Controller(config)
+controller = Controller(config, root_dir)
 
 
 @app.route('/')
@@ -35,10 +35,8 @@ def action_door(door_id, action):
     action_status = controller.toggle(door_id, action)
     return jsonify(action_status)
 
-
 def run():
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
-
 
 if __name__ == "__main__":
     run()

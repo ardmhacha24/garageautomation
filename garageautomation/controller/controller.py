@@ -15,7 +15,7 @@ from .door import Door
 
 
 class Controller(object):
-    def __init__(self, config):
+    def __init__(self, config, root_dir):
         # setting up the control pins on relay switch
         gpio.setwarnings(False)
         gpio.cleanup()
@@ -28,6 +28,7 @@ class Controller(object):
         # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
         print ("hkjjjkhkhkjhkh", self.config['config']['logs'], "ghgjghjhgyuyuu0000")
+        self.app_root = root_dir
         self.logger = self.create_logger()
         self.logger.info('garage automation system started up')
 
@@ -36,6 +37,14 @@ class Controller(object):
         LOGFILE_MODE = 'a'
         LOGFILE_MAXSIZE = 1 * 1024 * 1024
         LOGFILE_BACKUP_COUNT = 10
+
+        # Check whether the specified logs exists or not
+        if not os.path.exists(os.path.dirname(os.join(self.app_root, self.config['config']['logs']))):
+            try:
+                os.makedirs(os.path.dirname(self.config['config']['logs']))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
 
         # Set up logging
         logger = logging.getLogger('garage_logs')
