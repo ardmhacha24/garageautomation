@@ -1,3 +1,7 @@
+# Ignoring logs folder where app logs for garage will be stored
+logs/
+logs/garagelog.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

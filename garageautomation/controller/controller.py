@@ -47,10 +47,9 @@ class Controller(object):
                 if exc.errno != errno.EEXIST:
                     raise
 
-        # Set up logging
+        # Setting up logging handler
         logger = logging.getLogger('garage_logs')
         logger.setLevel(logging.DEBUG)
-
         file_handler = RotatingFileHandler(self.app_log_path,
                                            LOGFILE_MODE,
                                            LOGFILE_MAXSIZE,
