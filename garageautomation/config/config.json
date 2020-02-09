@@ -3,7 +3,7 @@
         "use_https":false,
         "use_auth":false,
         "use_alerts":false,
-        "logs":"/logs/garagelog.txt"
+        "logs":"logs/garagelog.txt"
     },
     "alerts":{
         "time_to_wait":10,
