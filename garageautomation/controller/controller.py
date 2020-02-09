@@ -13,7 +13,6 @@ import time
 # import smtplib
 # from typing import List
 
-os.
 class Controller(object):
     def __init__(self, config, root_dir):
         # setting up the control pins on relay switch
