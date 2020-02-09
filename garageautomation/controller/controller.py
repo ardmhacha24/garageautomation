@@ -1,19 +1,19 @@
 import errno
-import time
+import os
 import logging
 from logging.handlers import RotatingFileHandler
-import os
-# import sys
-import syslog
-# import uuid
-# import smtplib
-from typing import List
-
 import RPi.GPIO as gpio
-# import json
 from .door import Door
 
+import time
+# import json
+# import sys
+# import syslog
+# import uuid
+# import smtplib
+# from typing import List
 
+os.
 class Controller(object):
     def __init__(self, config, root_dir):
         # setting up the control pins on relay switch
@@ -27,8 +27,9 @@ class Controller(object):
         self.ttw = config['alerts']['time_to_wait']
         # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
-        print ("hkjjjkhkhkjhkh", self.config['config']['logs'], "ghgjghjhgyuyuu0000")
+        # retrieving logs location and setting up
         self.app_root = root_dir
+        self.app_log_path = os.path.join(self.app_root, self.config['config']['logs'])
         self.logger = self.create_logger()
         self.logger.info('garage automation system started up')
 
@@ -39,9 +40,9 @@ class Controller(object):
         LOGFILE_BACKUP_COUNT = 10
 
         # Check whether the specified logs exists or not
-        if not os.path.exists(os.path.dirname(os.join(self.app_root, self.config['config']['logs']))):
+        if not os.path.exists(os.path.dirname(self.app_log_path)):
             try:
-                os.makedirs(os.path.dirname(os.join(self.app_root, self.config['config']['logs'])))
+                os.makedirs(os.path.dirname(self.app_log_path))
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:
                     raise
@@ -49,10 +50,9 @@ class Controller(object):
         # Set up logging
         logger = logging.getLogger('garage_logs')
         logger.setLevel(logging.DEBUG)
-        log_path = self.config['config']['logs']
 
-        file_handler = RotatingFileHandler(log_path,
-                                           LOGFILE_MODE, \
+        file_handler = RotatingFileHandler(self.app_log_path,
+                                           LOGFILE_MODE,
                                            LOGFILE_MAXSIZE,
                                            LOGFILE_BACKUP_COUNT)
         file_handler.setFormatter(logging.Formatter(LOGFILE_FORMAT))
