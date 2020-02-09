@@ -8,10 +8,11 @@ from os import path as osp
 
 app = Flask(__name__)
 root_dir = osp.realpath(osp.dirname(__file__))
-with open(osp.join(root_dir, 'config/config.json')) as config_file:
+app_config_path = osp.join(root_dir, 'config/config.json')
+with open(app_config_path) as config_file:
     config = json.load(config_file)
 controller = Controller(config, root_dir)
-
+controller.logger.debug('Loaded default config file from \'%s\'' % app_config_path)
 
 @app.route('/')
 def index():

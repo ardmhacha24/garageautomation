@@ -6,6 +6,8 @@ import RPi.GPIO as gpio
 from .door import Door
 
 import time
+
+
 # import json
 # import sys
 # import syslog
@@ -27,11 +29,12 @@ class Controller(object):
         # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
         # retrieving logs location and setting up
-        print("root_dir: ", root_dir, "AAAA")
         self.app_root = root_dir
         self.app_log_path = os.path.join(self.app_root, self.config['config']['logs'])
         self.logger = self.create_logger()
-        self.logger.info('garage automation system started up')
+        # Log system startup
+        self.logger.info('---------- Garage Automation System (GAS) Starting up')
+        self.logger.info('__name__ is \'%s\'' % __name__)
 
     def create_logger(self):
         LOGFILE_FORMAT = '%(asctime)s [%(process)-5d:%(thread)#x] %(name)s %(levelname)-5s %(message)s [in %(module)s @ %(pathname)s:%(lineno)d]'
@@ -42,7 +45,6 @@ class Controller(object):
         # Check whether the specified logs exists or not
         if not os.path.exists(os.path.dirname(self.app_log_path)):
             try:
-                print ("app_log_path: ", self.app_log_path)
                 os.makedirs(os.path.dirname(self.app_log_path))
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:
@@ -79,8 +81,8 @@ class Controller(object):
         if door_status:
             return door_status
         else:
-            return ('ERROR: Requested Door ID: [%s] does not exist...',
-                    door_id)
+            self.logger.error('Door Status Request - door id does not exist: [ %s ]' % door_id)
+            return ('WARNING: Door Status Request - door id does not exist: [ %s ]' % door_id)
 
     def get_all_door_status(self):
         door_all_status = [
@@ -100,47 +102,25 @@ class Controller(object):
     def toggle(self, door_id, action_requested):
         if (action_requested == 'open') or (action_requested == 'close'):
             # logging the action request to build up a door view history
-            self.logger.info('Action requested on door %s:%s',door_id, action_requested)
+            self.logger.info('Action Requested - request to: [ %s:%s ]' %
+                             (door_id, action_requested))
             for d in self.doors:
                 if d.id == door_id:
                     action_status = d.toggle_relay(action_requested)
                     if action_status:
                         return action_status
                     else:
-                        return ('INFO: Requested action not took - door already in desired state: %s:%s:%s',
-                                (door_id, d.get_state(),action_requested,d.last_action_time))
+                        self.logger.warning('Action Requested - took no action as door already in desired state: [ %s:%s:%s ]' %
+                                            (door_id, d.get_state(), action_requested, d.last_action_time))
+                        return ('WARNING: Action Requested - took no action as door already in desired state: [ %s:%s:%s ]' %
+                                            (door_id, d.get_state(), action_requested, d.last_action_time))
                 else:
-                    return ('ERROR: Requested Door ID: [%s] does not exist...',
-                            door_id)
+                    self.logger.warning('Action Requested - door id does not exist: [ %s:%s ]' %
+                                        (door_id, action_requested))
+                    return ('WARNING: Action Requested - door id does not exist: [ %s:%s ]' %
+                            (door_id, action_requested))
         else:
-            return ('ERROR: Requested Action:[%s] is not supported... [open | close]',
-                    action_requested)
-
-    # def status_check(self):
-    #     for door in self.doors:
-    #         new_state = door.get_state()
-    #         if (door.last_state != new_state):
-    #             syslog.syslog('%s: %s => %s' % (door.name, door.last_state, new_state))
-    #             door.last_state = new_state
-    #             door.last_state_time = time.time()
-
-    #         if new_state == 'open' and not door.msg_sent and time.time() - door.open_time >= self.ttw:
-    #             if self.use_alerts:
-    #                 title = "%s's garage door open" % door.name
-    #                 etime = elapsed_time(int(time.time() - door.open_time))
-    #                 message = "%s's garage door has been open for %s" % (door.name, etime)
-
-    #         if new_state == 'closed':
-    #             if self.use_alerts:
-    #                 if door.msg_sent == True:
-    #                     title = "%s's garage doors closed" % door.name
-    #                     etime = elapsed_time(int(time.time() - door.open_time))
-    #                     message = "%s's garage door is now closed after %s  "% (door.name, etime)
-    #             door.open_time = time.time()
-
-    # def get_updates(self, lastupdate):
-    #     updates = []
-    #     for d in self.doors:
-    #         if d.last_state_time >= lastupdate:
-    #             updates.append((d.id, d.last_state, d.last_state_time))
-    #     return updates
+            self.logger.warning('Action Requested - requested action is not supported: [ %s:%s ]' %
+                                (door_id, action_requested))
+            return ('WARNING: Action Requested - requested action is not supported: [ %s:%s ]' %
+                    (door_id, action_requested))
