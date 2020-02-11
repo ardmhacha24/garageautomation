@@ -2,11 +2,11 @@ import errno
 import os
 import logging
 from logging.handlers import RotatingFileHandler
+import re
 import RPi.GPIO as gpio
 from .door import Door
 
 import time
-
 
 # import json
 # import sys
@@ -81,7 +81,7 @@ class Controller(object):
         if door_status:
             return door_status
         else:
-            self.logger.error('Door Status Request - door id does not exist: [ %s ]' % door_id)
+            self.logger.warning('Door Status Request - door id does not exist: [ %s ]' % door_id)
             return ('WARNING: Door Status Request - door id does not exist: [ %s ]' % door_id)
 
     def get_all_door_status(self):
@@ -92,7 +92,7 @@ class Controller(object):
                 "last_state": d.last_state,
                 "last_state_time": d.last_state_time,
                 "last_action": d.last_action,
-                "last_actioon_time": d.last_action_time,
+                "last_action_time": d.last_action_time,
                 "real_time_state": d.get_state()
             }
             for d in self.doors
@@ -100,6 +100,8 @@ class Controller(object):
         return door_all_status
 
     def toggle(self, door_id, action_requested):
+        self.logger.debug('Received Request to togle door: [ %s:%s ]' %
+                             (door_id, action_requested))
         if (action_requested == 'open') or (action_requested == 'close'):
             # logging the action request to build up a door view history
             self.logger.info('Action Requested - request to: [ %s:%s ]' %
@@ -124,3 +126,22 @@ class Controller(object):
                                 (door_id, action_requested))
             return ('WARNING: Action Requested - requested action is not supported: [ %s:%s ]' %
                     (door_id, action_requested))
+
+    def get_door_history(self, door_id):
+        door_history = []
+
+        log_pattern = re.compile(r"([0-9\-]*)T([0-9\-:.+]*)\s*\[([^]]*)\](.*)")
+
+        with open(self.app_log_path, "r") as f:
+            for line in f:
+                match = log_pattern.match(line)
+                if not match:
+                    continue
+                grps = match.groups()
+                print("Log line:")
+                print(f"  date:{grps[0]},\n  time:{grps[1]},\n  type:{grps[2]},\n  text:{grps[3]}")
+                door_history = [
+                    {
+                        "line": line
+                    }
+                ]

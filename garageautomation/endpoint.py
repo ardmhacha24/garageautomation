@@ -12,7 +12,7 @@ app_config_path = osp.join(root_dir, 'config/config.json')
 with open(app_config_path) as config_file:
     config = json.load(config_file)
 controller = Controller(config, root_dir)
-controller.logger.debug('Loaded default config file from \'%s\'' % app_config_path)
+controller.logger.debug('Loaded default config file from [ %s ] ' % app_config_path)
 
 @app.route('/')
 def index():
@@ -35,6 +35,12 @@ def get_door_status(door_id):
 def action_door(door_id, action):
     action_status = controller.toggle(door_id, action)
     return jsonify(action_status)
+
+# view history of a door
+@app.route("/history/<door_id>", methods=['GET'])
+def get_history_door(door_id):
+    door_history = controller.get_door_history(door_id)
+    return jsonify(door_history)
 
 def run():
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)

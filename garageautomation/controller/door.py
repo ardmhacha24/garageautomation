@@ -22,7 +22,7 @@ class Door(object):
 
         # door action times and status
         self.time_to_openclose = config['approx_time_to_openclose']
-        self.open_time = time.time()
+        #self.open_time = time.time()
         self.last_action = None
         self.last_action_time = None
         self.last_state = self.get_state()
@@ -91,7 +91,5 @@ class Door(object):
             return ('ERROR: action time to complete - investigate as taking too long... %s:%s:%s',
                     (door_current_state, action_requested, self.last_action_time))
         else:
-            # commented below out as dont do anything as already in requested state - but will log that the ask occurred in further coding
-            #self.last_action = None
-            #self.last_action_time = None
+            # not doing anything as already in requested state - but will log that the ask occurred in further coding
             return None
