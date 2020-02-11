@@ -62,13 +62,13 @@ class Door(object):
             time.sleep(0.2)
             gpio.output(self.open_pin, True)
             # pausing to allow movement from sensor
-            time.sleep(1)
+            time.sleep(2)
             door_current_state = self.get_state()
             # checking that the door is in movement
             if door_current_state == 'opening':
                 return 'SUCCESS: Successful action - door opening'
             else:
-                return ('ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
+                return ('ERROR: **OPEN** action failure - didnt kick off your requested action: %s:%s:%s', (
                     self.id, action_requested, self.last_action_time))
         elif (action_requested == 'close') and (door_current_state == 'opened'):
             self.last_action = 'close'
@@ -77,13 +77,13 @@ class Door(object):
             time.sleep(0.2)
             gpio.output(self.close_pin, True)
             # pausing to allow movement from sensor
-            time.sleep(1)
+            time.sleep(2)
             door_current_state = self.get_state()
             # checking that the door is in movement
             if door_current_state == 'closing':
                 return 'SUCCESS: Successful action - door closing'
             else:
-                return ('ERROR: action failure - didnt kick off your requested action: %s:%s:%s', (
+                return ('ERROR: **CLOSE** action failure - didnt kick off your requested action: %s:%s:%s', (
                     self.id, action_requested, self.last_action_time))
         elif (door_current_state == 'opening') or (door_current_state == 'closing'):
             return ('INFO: Took no action - already moving... %s:%s:%s',

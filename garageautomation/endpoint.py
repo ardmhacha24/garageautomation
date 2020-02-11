@@ -40,6 +40,7 @@ file_handler.setFormatter(LOGFILE_FORMAT)
 root_logger.addHandler(file_handler)
 
 # Log system startup
+root_logger.debug('================================================')
 root_logger.debug('----- Garage Automation System (GAS) Starting up')
 app = Flask(__name__)
 
@@ -82,9 +83,8 @@ def get_history_door(door_id):
     return jsonify(door_history)
 
 def run():
-    root_logger.debug('----- Endpoint now listening. GAS Up...')
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
 
-
 if __name__ == "__main__":
+    root_logger.debug('----- Endpoint now listening. GAS Up...')
     run()
