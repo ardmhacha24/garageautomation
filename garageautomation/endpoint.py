@@ -7,52 +7,52 @@ from flask import Flask, jsonify
 from garageautomation.controller import Controller
 
 
-def create_root_logger():
-    LOGFILE_FORMAT = logging.Formatter(
+# ------------- Setup ------------
+LOGFILE_FORMAT = logging.Formatter(
         '%(asctime)s %(name)s %(levelname)-5s %(message)s [in %(module)s @ %(lineno)d]',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
-    LOGFILE_MODE = 'a'
-    LOGFILE_MAXSIZE = 1 * 1024 * 1024
-    LOGFILE_BACKUP_COUNT = 10
+LOGFILE_MODE = 'a'
+LOGFILE_MAXSIZE = 1 * 1024 * 1024
+LOGFILE_BACKUP_COUNT = 10
 
-    # setting up root logger
-    app_log_path = os.path.join(app_root_dir, 'logs/garagelog.txt')
-
-    # Check whether the specified logs exists or not
-    if not os.path.exists(os.path.dirname(app_log_path)):
-        try:
-            os.makedirs(os.path.dirname(app_log_path))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-
-    # Setting up root logging handler
-    root_logger = logging.getLogger()
-    root_logger.setLevel(logging.DEBUG)
-    file_handler = RotatingFileHandler(app_log_path,
-                                           LOGFILE_MODE,
-                                           LOGFILE_MAXSIZE,
-                                           LOGFILE_BACKUP_COUNT)
-    file_handler.setFormatter(LOGFILE_FORMAT)
-    root_logger.addHandler(file_handler)
-
-    return root_logger
-
-
-# setup root logger
-logger = create_root_logger()
-# Log system startup
-logger.debug('----- Garage Automation System (GAS) Starting up')
-
-app = Flask(__name__)
+# setting up root logger
 app_root_dir = os.path.realpath(os.path.dirname(__file__))
+default_app_log_path = 'logs/garagelog.txt'
+app_log_path = os.path.join(app_root_dir, default_app_log_path)
+
+# Check whether the specified logs exists or not
+if not os.path.exists(os.path.dirname(app_log_path)):
+    try:
+        os.makedirs(os.path.dirname(app_log_path))
+    except OSError as exc:  # Guard against race condition
+        if exc.errno != errno.EEXIST:
+            raise
+
+# Setting up root logging handler
+root_logger = logging.getLogger()
+root_logger.setLevel(logging.DEBUG)
+file_handler = RotatingFileHandler(app_log_path,
+                                   LOGFILE_MODE,
+                                   LOGFILE_MAXSIZE,
+                                   LOGFILE_BACKUP_COUNT)
+file_handler.setFormatter(LOGFILE_FORMAT)
+root_logger.addHandler(file_handler)
+
+# Log system startup
+root_logger.debug('----- Garage Automation System (GAS) Starting up')
+app = Flask(__name__)
+
 app_config_path = os.path.join(app_root_dir, 'config/config.json')
 with open(app_config_path) as config_file:
     config = json.load(config_file)
 controller = Controller(config, app_root_dir)
-logger.info('Loaded default config file from [ %s ] ' % app_config_path)
+root_logger.debug('----- Loaded default config file from [ %s ] ' % app_config_path)
 
+#if default_app_log_path != config['config']['logs']:
+    # assign new handler to log file location as specified in config file
+
+# -------------- Endpoint Routes ----------------
 @app.route('/')
 def index():
     return "Nothing to see here..."
@@ -83,6 +83,7 @@ def get_history_door(door_id):
 
 def run():
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
+    root_logger.debug('----- Endpoint now listening. GAS Up...')
 
 if __name__ == "__main__":
     run()
