@@ -21,9 +21,9 @@ class Controller(object):
         # retrieving logs location and setting up
         self.app_log_path = os.path.join(app_root_dir, self.config['config']['logs'])
         self.logger = logging.getLogger(__name__)
-        # Log system startup
-        self.logger.info('---------- Garage Automation System (GAS) Starting up')
-        self.logger.info('__name__ is \'%s\'' % __name__)
+        # Log controller startup
+        self.logger.debug('------ GAS: Controller initialised')
+        self.logger.debug('------ GAS: Doors loaded : [%s]' % self.doors)
 
     def get_door_status(self, door_id):
         door_status = []

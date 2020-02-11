@@ -16,6 +16,9 @@ def create_root_logger():
     LOGFILE_MAXSIZE = 1 * 1024 * 1024
     LOGFILE_BACKUP_COUNT = 10
 
+    # setting up root logger
+    app_log_path = os.path.join(app_root_dir, 'logs/garagelog.txt')
+
     # Check whether the specified logs exists or not
     if not os.path.exists(os.path.dirname(app_log_path)):
         try:
@@ -36,15 +39,18 @@ def create_root_logger():
 
     return root_logger
 
+
+# setup root logger
+logger = create_root_logger()
+# Log system startup
+logger.debug('----- Garage Automation System (GAS) Starting up')
+
 app = Flask(__name__)
 app_root_dir = os.path.realpath(os.path.dirname(__file__))
 app_config_path = os.path.join(app_root_dir, 'config/config.json')
 with open(app_config_path) as config_file:
     config = json.load(config_file)
 controller = Controller(config, app_root_dir)
-#setting up root logger
-app_log_path = os.path.join(app_root_dir, controller.config['config']['logs'])
-logger = create_root_logger()
 logger.info('Loaded default config file from [ %s ] ' % app_config_path)
 
 @app.route('/')
