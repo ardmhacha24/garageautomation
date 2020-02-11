@@ -63,7 +63,7 @@ class Controller(object):
         return door_all_status
 
     def toggle(self, door_id, action_requested):
-        self.logger.debug('Received Request to togle door: [ %s:%s ]' %
+        self.logger.debug('Received Request to toggle door: [ %s:%s ]' %
                              (door_id, action_requested))
         if (action_requested == 'open') or (action_requested == 'close'):
             # logging the action request to build up a door view history
@@ -75,9 +75,9 @@ class Controller(object):
                     if action_status:
                         return action_status
                     else:
-                        self.logger.warning('Action Requested - took no action as door already in desired state: [ %s:%s:%s ]' %
+                        self.logger.warning('Action Requested - took no action as door already in desired state: [ %s:%s:%s:%s ]' %
                                             (door_id, d.get_state(), action_requested, d.last_action_time))
-                        return ('WARNING: Action Requested - took no action as door already in desired state: [ %s:%s:%s ]' %
+                        return ('WARNING: Action Requested - took no action as door already in desired state: [ %s:%s:%s:%s ]' %
                                             (door_id, d.get_state(), action_requested, d.last_action_time))
                 else:
                     self.logger.warning('Action Requested - door id does not exist: [ %s:%s ]' %
