@@ -1,5 +1,6 @@
-import RPi.GPIO as gpio
+import logging
 import time
+import RPi.GPIO as gpio
 
 
 class Door(object):
@@ -10,7 +11,8 @@ class Door(object):
         self.close_pin = config['close_pin']
         self.closed_state_pin = config['closed_state_pin']
         self.opened_state_pin = config['opened_state_pin']
-
+        # setting up logger
+        self.logger = logging.getLogger(__name__)
         # setting up open/close pins
         gpio.setup(self.open_pin, gpio.OUT)
         gpio.output(self.open_pin, True)
@@ -19,10 +21,10 @@ class Door(object):
         # setting up door status reed switches
         gpio.setup(self.closed_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
         gpio.setup(self.opened_state_pin, gpio.IN, pull_up_down=gpio.PUD_UP)
-
         # door action times and status
         self.time_to_openclose = config['approx_time_to_openclose']
-        #self.open_time = time.time()
+        # time to use in monitoring process to alert to user when opened for longer than set time
+        self.opened_time = None
         self.last_action = None
         self.last_action_time = None
         self.last_state = self.get_state()

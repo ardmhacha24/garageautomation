@@ -1,18 +1,51 @@
-#!/usr/bin/env python3
-# setting up flask framework for our endoint
+import errno
+import os
+import logging
+from logging.handlers import RotatingFileHandler
 import json
 from flask import Flask, jsonify
 from garageautomation.controller import Controller
-from os import path as osp
 
+
+def create_root_logger():
+    LOGFILE_FORMAT = logging.Formatter(
+        '%(asctime)s %(name)s %(levelname)-5s %(message)s [in %(module)s @ %(lineno)d]',
+        datefmt='%Y-%m-%d %H:%M:%S'
+    )
+    LOGFILE_MODE = 'a'
+    LOGFILE_MAXSIZE = 1 * 1024 * 1024
+    LOGFILE_BACKUP_COUNT = 10
+
+    # Check whether the specified logs exists or not
+    if not os.path.exists(os.path.dirname(app_log_path)):
+        try:
+            os.makedirs(os.path.dirname(app_log_path))
+        except OSError as exc:  # Guard against race condition
+            if exc.errno != errno.EEXIST:
+                raise
+
+    # Setting up root logging handler
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.DEBUG)
+    file_handler = RotatingFileHandler(app_log_path,
+                                           LOGFILE_MODE,
+                                           LOGFILE_MAXSIZE,
+                                           LOGFILE_BACKUP_COUNT)
+    file_handler.setFormatter(LOGFILE_FORMAT)
+    root_logger.addHandler(file_handler)
+
+    return root_logger
 
 app = Flask(__name__)
-root_dir = osp.realpath(osp.dirname(__file__))
-app_config_path = osp.join(root_dir, 'config/config.json')
+app_root_dir = os.path.realpath(osp.dirname(__file__))
+app_config_path = os.path.join(app_root_dir, 'config/config.json')
 with open(app_config_path) as config_file:
     config = json.load(config_file)
-controller = Controller(config, root_dir)
-controller.logger.debug('Loaded default config file from [ %s ] ' % app_config_path)
+controller = Controller(config, app_root_dir)
+#setting up root logger
+app_log_path = os.path.join(app_root_dir, controller.config['config']['logs'])
+logger = create_root_logger()
+logger.info('Loaded default config file from [ %s ] ' % app_config_path)
 
 @app.route('/')
 def index():
