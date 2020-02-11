@@ -37,7 +37,7 @@ def create_root_logger():
     return root_logger
 
 app = Flask(__name__)
-app_root_dir = os.path.realpath(osp.dirname(__file__))
+app_root_dir = os.path.realpath(os.path.dirname(__file__))
 app_config_path = os.path.join(app_root_dir, 'config/config.json')
 with open(app_config_path) as config_file:
     config = json.load(config_file)
