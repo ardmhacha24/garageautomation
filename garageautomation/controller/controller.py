@@ -66,13 +66,14 @@ class Controller(object):
         self.logger.debug('Received Request to toggle door: [ %s:%s ]' %
                              (door_id, action_requested))
         if (action_requested == 'open') or (action_requested == 'close'):
-            # logging the action request to build up a door view history
-            self.logger.info('Action Requested - request to: [ %s:%s ]' %
-                             (door_id, action_requested))
             for d in self.doors:
                 if d.id == door_id:
                     action_status = d.toggle_relay(action_requested)
                     if action_status:
+                        # logging the action request to build up a door view history
+                        self.logger.info('Action Requested - request to: [ %s:%s ]' %
+                                         (door_id, action_requested))
+                        self.logger.info(action_status)
                         return action_status
                     else:
                         self.logger.warning('Action Requested - took no action as door already in desired state: [ %s:%s:%s:%s ]' %

@@ -82,8 +82,9 @@ def get_history_door(door_id):
     return jsonify(door_history)
 
 def run():
-    app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
     root_logger.debug('----- Endpoint now listening. GAS Up...')
+    app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
+
 
 if __name__ == "__main__":
     run()
