@@ -7,6 +7,8 @@ from .door import Door
 
 class Controller(object):
     def __init__(self, config, app_root_dir):
+        # retrieving core config object
+        self.config = config
         # retrieving logs location and setting up
         self.app_log_path = os.path.join(app_root_dir, self.config['config']['logs'])
         self.logger = logging.getLogger(__name__)
@@ -14,8 +16,7 @@ class Controller(object):
         gpio.setwarnings(False)
         gpio.cleanup()
         gpio.setmode(gpio.BCM)
-        # retrieving core config settings
-        self.config = config
+        # setting needed config attributes
         self.use_alerts = config['config']['use_alerts']
         self.alert_type = config['alerts']['alert_type']
         self.ttw = config['alerts']['time_to_wait']
