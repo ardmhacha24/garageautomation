@@ -64,7 +64,7 @@ class Controller(object):
         return door_all_status
 
     def toggle(self, door_id, action_requested):
-        self.logger.debug('Received Request to toggle door: [ %s:%s ]' %
+        self.logger.debug('------ GAS: Received Request to toggle door: [ %s:%s ]' %
                              (door_id, action_requested))
         if (action_requested == 'open') or (action_requested == 'close'):
             for d in self.doors:
