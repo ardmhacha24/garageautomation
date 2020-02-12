@@ -7,6 +7,9 @@ from .door import Door
 
 class Controller(object):
     def __init__(self, config, app_root_dir):
+        # retrieving logs location and setting up
+        self.app_log_path = os.path.join(app_root_dir, self.config['config']['logs'])
+        self.logger = logging.getLogger(__name__)
         # setting up the control pins on relay switch
         gpio.setwarnings(False)
         gpio.cleanup()
@@ -18,12 +21,10 @@ class Controller(object):
         self.ttw = config['alerts']['time_to_wait']
         # retrieving door configs from config file
         self.doors = [Door(n, c) for (n, c) in config['doors'].items()]
-        # retrieving logs location and setting up
-        self.app_log_path = os.path.join(app_root_dir, self.config['config']['logs'])
-        self.logger = logging.getLogger(__name__)
+        for d in self.doors:
+            self.logger.debug('------ GAS: Door loaded: [ ID: %s : Name: %s ]' % (d.id, d.name))
         # Log controller startup
         self.logger.debug('------ GAS: Controller initialised')
-        self.logger.debug('------ GAS: Doors loaded : [%s]' % self.doors)
 
     def get_door_status(self, door_id):
         door_status = []
