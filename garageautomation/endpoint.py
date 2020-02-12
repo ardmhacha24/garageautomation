@@ -42,13 +42,14 @@ root_logger.addHandler(file_handler)
 # Log system startup
 root_logger.debug('================================================')
 root_logger.debug('----- Garage Automation System (GAS) Starting up')
+root_logger.debug('================================================')
 app = Flask(__name__)
 
 app_config_path = os.path.join(app_root_dir, 'config/config.json')
 with open(app_config_path) as config_file:
     config = json.load(config_file)
 controller = Controller(config, app_root_dir)
-root_logger.debug('----- Loaded default config file from [ %s ] ' % app_config_path)
+root_logger.debug('----- GAS: Loaded default config file from [ %s ] ' % app_config_path)
 
 #if default_app_log_path != config['config']['logs']:
     # assign new handler to log file location as specified in config file
@@ -86,5 +87,7 @@ def run():
     app.run(host='0.0.0.0', port=config['site']['port'], debug=True)
 
 if __name__ == "__main__":
-    root_logger.debug('----- Endpoint now listening. GAS Up...')
+    root_logger.debug('================================================')
+    root_logger.debug('----- GAS: Endpoint now listening. GAS Up...')
+    root_logger.debug('================================================')
     run()

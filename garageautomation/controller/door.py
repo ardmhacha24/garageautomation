@@ -68,7 +68,7 @@ class Door(object):
             if door_current_state == 'opening':
                 return 'SUCCESS: Successful action - door opening'
             else:
-                return ('ERROR: **OPEN** action failure - didnt kick off your requested action: %s:%s:%s', (
+                return ('ERROR: **OPEN** action failure - didnt kick off your requested action: %s:%s:%s' % (
                     self.id, action_requested, self.last_action_time))
         elif (action_requested == 'close') and (door_current_state == 'opened'):
             self.last_action = 'close'
@@ -83,14 +83,14 @@ class Door(object):
             if door_current_state == 'closing':
                 return 'SUCCESS: Successful action - door closing'
             else:
-                return ('ERROR: **CLOSE** action failure - didnt kick off your requested action: %s:%s:%s', (
+                return ('ERROR: **CLOSE** action failure - didnt kick off your requested action: %s:%s:%s' % (
                     self.id, action_requested, self.last_action_time))
         elif (door_current_state == 'opening') or (door_current_state == 'closing'):
-            return ('INFO: Took no action - already moving... %s:%s:%s',
+            return ('INFO: Took no action - already moving... %s:%s:%s' %
                     (door_current_state, self.last_action, self.last_action_time))
         elif (door_current_state == 'opening error - taking too long') or (
                 door_current_state == 'closing error - taking too long'):
-            return ('ERROR: action time to complete - investigate as taking too long... %s:%s:%s',
+            return ('ERROR: action time to complete - investigate as taking too long... %s:%s:%s' %
                     (door_current_state, action_requested, self.last_action_time))
         else:
             # not doing anything as already in requested state - but will log that the ask occurred in further coding
